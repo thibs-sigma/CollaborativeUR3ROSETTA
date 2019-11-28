@@ -1,0 +1,11 @@
+moveit_setup_assistant_config:
+  URDF:
+    package: vrep_ros_control_example
+    relative_path: urdf/multiple_ur.xacro
+    xacro_args: "--inorder "
+  SRDF:
+    relative_path: config/multiple_ur3.srdf
+  CONFIG:
+    author_name: Thibaud Hiltenbrand
+    author_email: thibaud.hiltenbrand@gmail.com
+    generated_timestamp: 1573226306

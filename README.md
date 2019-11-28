@@ -31,6 +31,13 @@ A continuación se describen los pasos principales de instalación y funcionamie
 - Compila con `catkin_make`
 - Añade `source /home/YOUR_USERNAME/CooperationSimu_ws/devel/setup.bash` a tu archivo `.bashrc`
 
+- VREP Installation : http://coppeliarobotics.com/previousVersions (3.6.2) + untar + añadir al bashrc
+  - export VREP_ROOT=/home/thib/V-REP_PRO_EDU_V3_6_2_Ubuntu16_04
+  - export VREP_ROOT_DIR=/home/thib/V-REP_PRO_EDU_V3_6_2_Ubuntu16_04
+  - ./vrep.sh para verificar instalación
+- *VREP ROS* --> seguir ese [![tutorial]()](http://www.coppeliarobotics.com/helpFiles/en/ros1Tutorial.htm)
+- Cambiar *launch_vrep.sh*
+
 ## Lanzamiento
 
 TO DO

@@ -1,0 +1,11 @@
+moveit_setup_assistant_config:
+  URDF:
+    package: ur3_with_robotiq_gripper_description
+    relative_path: urdf/ur3_robotiq.xacro
+    xacro_args: "--inorder "
+  SRDF:
+    relative_path: config/ur3_robotiq.srdf
+  CONFIG:
+    author_name: UNCUYO
+    author_email: UNCUYO@uncuyo.com
+    generated_timestamp: 1569511974

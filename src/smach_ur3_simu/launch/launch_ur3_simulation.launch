@@ -1,0 +1,22 @@
+<launch>
+
+    <!-- ROS PARAMETERS  -->
+    <arg name="smach_view" default="false" />
+
+    <!-- MoveIt! Planning node -->
+    <!-- <include file="$(find vrep_ros_control_example)/launch/vrep_UR.launch"> </include> -->
+
+    <!-- MoveIt! Planning node -->
+    <include file="$(find dual_ur3_moveit_config)/launch/multiple_ur3_moveit_planning_execution.launch">
+        <arg name="sim_VREP" value="true"/>
+    </include>
+
+    <!-- Upper-level state machine -->
+    <!-- <node pkg="smach_ur3_simu" type="sm_ur3_simu.py" name="logic_state_machine" output="screen"/> -->
+    <node pkg="smach_ur3_simu" type="sm_ur3_simu_noMenu.py" name="logic_state_machine" output="screen"/>
+    
+    <group if="$(arg smach_view)">
+        <node pkg="smach_viewer" type="smach_viewer.py" name="state_machine_viewer" output="screen"/>
+    </group>
+
+</launch>

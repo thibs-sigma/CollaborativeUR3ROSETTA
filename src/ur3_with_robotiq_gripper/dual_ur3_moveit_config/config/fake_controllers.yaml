@@ -1,0 +1,23 @@
+controller_list:
+  - name: fake_UR3_1_manipulator_controller
+    joints:
+      - shoulder_pan_joint
+      - shoulder_lift_joint
+      - elbow_joint
+      - wrist_1_joint
+      - wrist_2_joint
+      - wrist_3_joint
+  - name: fake_endeffector_controller
+    joints:
+      - gripper_finger1_joint
+  - name: fake_UR3_2_manipulator_controller
+    joints:
+      - UR3_2_shoulder_pan_joint
+      - UR3_2_shoulder_lift_joint
+      - UR3_2_elbow_joint
+      - UR3_2_wrist_1_joint
+      - UR3_2_wrist_2_joint
+      - UR3_2_wrist_3_joint
+  - name: fake_UR3_2_endeffector_controller
+    joints:
+      - UR3_2_gripper_finger1_joint

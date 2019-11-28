@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro"
+       name="multiple_ur3" >
+
+  <!-- THIS FILE IS A WORKAROUND TO ALLOW THE USE OF MULTIPLE ROBOTS IN THE SAME TIME -->
+
+  <!-- UR3_1 -->
+	<!-- UR from ROS-i repos -->
+	<xacro:include filename="$(find ur_description)/urdf/ur3.urdf.xacro" />
+
+  <!-- CHECK HERE POSITION IN RVIZ WORLD UR3_1 -->
+	<link name="world" />
+	<joint name="world_joint" type="fixed">
+		<parent link="world" />
+		<child link = "base_link" />
+		<origin xyz="-1.025 -1.6 0.54" rpy="0.0 0.0 -1.57" />
+	</joint>
+
+
+	<xacro:ur3_robot prefix="" joint_limited="true"/>
+	
+
+	<!-- Robotiq from Beta Robots fork-->
+	<xacro:include filename="$(find robotiq_85_description)/urdf/robotiq_85_gripper.urdf.xacro" />
+	<xacro:robotiq_85_gripper prefix="" parent="ee_link">
+		<origin xyz="0 0 0" rpy="0 0 0" />
+	</xacro:robotiq_85_gripper>
+
+  <!-- __________________________________________________________ -->
+
+	<!-- UR3_2 -->
+	<!-- UR from ROS-i repos -->
+	<xacro:include filename="$(find ur_description)/urdf/ur3.urdf.xacro" />
+
+	<xacro:ur3_robot prefix="UR3_2_" joint_limited="true"/>
+
+  <!-- CHECK HERE POSITION IN RVIZ WORLD UR3_1 -->
+	<joint name="UR3_2_world_joint" type="fixed">
+		<parent link="world" />
+		<child link = "UR3_2_base_link" />
+		<origin xyz="-1.125 -0.5 0.54" rpy="0.0 0.0 -1.57" />
+	</joint>
+
+
+	<!-- Robotiq from Beta Robots fork-->
+	<xacro:include filename="$(find robotiq_85_description)/urdf/robotiq_85_gripper.urdf.xacro" />
+	<xacro:robotiq_85_gripper prefix="UR3_2_" parent="UR3_2_ee_link">
+		<origin xyz="0 0 0" rpy="0 0 0" />
+	</xacro:robotiq_85_gripper>
+ 
+</robot>
+	
+	
+
+
+
+
+
+
+
+

@@ -1,0 +1,19 @@
+<launch>
+  <arg name="sim" default="false" />
+  <arg name="sim_VREP" default="false" />
+  <!-- <arg name="limited" default="false"/> -->
+  <arg name="debug" default="false" />
+
+  <!-- Remap follow_joint_trajectory -->
+  <remap if="$(arg sim)" from="/follow_joint_trajectory" to="/arm_controller/follow_joint_trajectory"/>
+  <remap if="$(arg sim_VREP)" from="/follow_joint_trajectory" to="/UR3_1_controller/follow_joint_trajectory"/>
+  
+  <!-- <remap if="$(arg sim_VREP)" from="/joint_states" to="/UR3_1/joint_states"/> -->
+
+
+  <!-- Launch moveit -->
+  <include file="$(find ur3_with_robotiq_gripper_moveit_config)/launch/move_group.launch">
+    <!-- <arg name="limited" default="$(arg limited)"/> -->
+    <arg name="debug" default="$(arg debug)" />
+  </include>
+</launch>

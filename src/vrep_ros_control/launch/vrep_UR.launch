@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<launch>
+
+
+  <param name="robot_description" command="$(find xacro)/xacro --inorder '$(find vrep_ros_control)/urdf/multiple_ur.xacro'" />
+
+  <!-- Robot state publisher UR3_1 -->
+  <node name="robot_state_publisher_1" pkg="robot_state_publisher" type="robot_state_publisher">
+    <param name="publish_frequency" type="double" value="50.0" />
+    <param name="tf_prefix" type="string" value="" />
+    <!-- <remap from="joint_states" to="UR3_1/joint_states" /> -->
+  </node>
+
+  <!-- Robot state publisher UR3_2 -->
+  <node name="robot_state_publisher_2" pkg="robot_state_publisher" type="robot_state_publisher">
+    <param name="publish_frequency" type="double" value="50.0" />
+    <param name="tf_prefix" type="string" value="" />
+    <!-- <remap from="joint_states" to="UR3_2/joint_states" /> -->
+  </node>
+
+  <!-- Start controllers -->
+  <rosparam file="$(find vrep_ros_control)/control/mr_controller.yaml" command="load"/> <!-- Joint trajectory controller (this is not a low-level controller) -->
+
+  <node name="controller_manager_spawner" pkg="controller_manager" type="spawner" args="UR3_1_controller UR3_2_controller" />
+
+  <!-- load other controllers -->
+  <node name="ros_control_controller_manager" pkg="controller_manager" type="controller_manager" respawn="false" output="screen" args="load UR3_1_joint_group_position_controller UR3_2_joint_group_position_controller" />
+
+
+  <!-- load V-REP interface -->
+  <node name="loader_vrep" pkg="vrep_ros_control" type="launch_vrep.sh" />
+
+
+</launch>

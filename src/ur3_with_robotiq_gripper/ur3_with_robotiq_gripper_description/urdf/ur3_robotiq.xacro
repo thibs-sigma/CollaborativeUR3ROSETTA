@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro"
+       name="ur3_robotiq" >
+
+	<xacro:arg name="limited" default="true"/>
+
+	<!-- THE ROBOT -->
+	<!-- Dummy link to avoid errors with base_link inertia -->
+	<link name="dummy" />
+	<joint name="dummy_joint" type="fixed">
+		<parent link="dummy"/>
+		<child link="base_link"/>
+	</joint>
+
+	<!-- UR from ROS-i repos -->
+	<xacro:include filename="$(find ur_description)/urdf/ur3.urdf.xacro" />
+
+	<group ns="UR3_1">
+	<joint name="world_joint" type="fixed">
+		<parent link="world" />
+		<child link = "base_link" />
+		<origin xyz="0.0 1.0 0.02" rpy="0.0 0.0 0.0" />
+	</joint>
+	</group>
+
+	<xacro:ur3_robot prefix="" joint_limited="true"/>
+	
+
+	<!-- Robotiq from Beta Robots fork-->
+	<xacro:include filename="$(find robotiq_85_description)/urdf/robotiq_85_gripper.urdf.xacro" />
+	<xacro:robotiq_85_gripper prefix="" parent="ee_link">
+		<origin xyz="0 0 0" rpy="0 0 0" />
+	</xacro:robotiq_85_gripper>
+
+
+ 
+</robot>
+	
+	
+
+
+
+
+
+
+
+

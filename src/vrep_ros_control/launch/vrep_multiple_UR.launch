@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<launch>
+
+
+  <param name="robot_description" command="$(find xacro)/xacro --inorder '$(find ur3_with_robotiq_gripper_description)/urdf/ur3_robotiq.xacro'" />
+  <param name="robot_description2" command="$(find xacro)/xacro --inorder '$(find ur3_with_robotiq_gripper_description)/urdf/ur3_2_robotiq.xacro'" />
+
+  <!-- BEGIN UR3_1 -->
+  <group ns="UR3_1">
+    <!-- Robot state publisher node -->
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" output="screen">
+      <param name="publish_frequency" type="double" value="50.0" />
+      <param name="tf_prefix" type="string" value="UR3_1" />
+      <!-- <remap from="joint_states" to="UR3_1/joint_states" /> -->
+    </node>
+  </group>
+
+  <!-- BEGIN UR3_2 -->
+  <group ns="UR3_2">
+    <!-- Robot state publisher node -->
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" output="screen">
+      <param name="publish_frequency" type="double" value="50.0" />
+      <param name="tf_prefix" type="string" value="UR3_2" />
+      <!-- <remap from="joint_states" to="UR3_1/joint_states" /> -->
+    </node>
+  </group>
+
+  <!-- Static transforms publishers -->
+  <node pkg="tf" type="static_transform_publisher" name="world_to_base_UR3_1_tf" args="0 0 0 0 0 0 world UR3_1/base_link 100"/>
+  <node pkg="tf" type="static_transform_publisher" name="world_to_base_UR3_2_tf" args="0 1 0 0 0 0 world UR3_2/base_link 100"/>
+
+  <!-- Start controllers -->
+  <rosparam file="$(find vrep_ros_control_example)/control/mr_controller.yaml" command="load"/> <!-- Joint trajectory controller (this is not a low-level controller) -->
+  <rosparam file="$(find vrep_ros_control_example)/control/UR3_2_mr_controller.yaml" command="load"/> <!-- Joint trajectory controller (this is not a low-level controller) -->
+
+  <node name="controller_manager_spawner" pkg="controller_manager" type="spawner" args="mr_controller" />
+
+  <!-- load other controllers -->
+  <node name="ros_control_controller_manager" pkg="controller_manager" type="controller_manager" respawn="false" output="screen" args="load joint_group_position_controller" />
+
+  <!-- load V-REP interface -->
+  <node name="loader_vrep" pkg="vrep_ros_control_example" type="launch_vrep.sh" />
+
+</launch>
