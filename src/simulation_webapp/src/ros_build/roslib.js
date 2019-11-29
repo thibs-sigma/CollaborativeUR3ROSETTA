@@ -1,3 +1,4 @@
+/*eslint-disable*/
 (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 /*
  * The MIT License (MIT)
@@ -415,9 +416,8 @@ else if (!global.CBOR)
  * Copyright (c) 2013 hij1nx
  * Licensed under the MIT license.
  */
-;!function(undefined) {
-
-  var isArray = Array.isArray ? Array.isArray : function _isArray(obj) {
+    !function (undefined) {
+        var isArray = Array.isArray ? Array.isArray : function _isArray(obj) {
     return Object.prototype.toString.call(obj) === "[object Array]";
   };
   var defaultMaxListeners = 10;
@@ -678,11 +678,11 @@ else if (!global.CBOR)
 
   EventEmitter.prototype.many = function(event, ttl, fn) {
     return this._many(event, ttl, fn, false);
-  }
+  };
 
   EventEmitter.prototype.prependMany = function(event, ttl, fn) {
     return this._many(event, ttl, fn, true);
-  }
+  };
 
   EventEmitter.prototype._many = function(event, ttl, fn, prepend) {
     var self = this;
@@ -943,7 +943,7 @@ else if (!global.CBOR)
     }
 
     return this;
-  }
+  };
 
   EventEmitter.prototype._on = function(type, listener, prepend) {
     if (typeof type === 'function') {
@@ -994,7 +994,7 @@ else if (!global.CBOR)
     }
 
     return this;
-  }
+  };
 
   EventEmitter.prototype.off = function(type, listener) {
     if (typeof listener !== 'function') {
@@ -1153,7 +1153,7 @@ else if (!global.CBOR)
 
   EventEmitter.prototype.eventNames = function(){
     return Object.keys(this._events);
-  }
+  };
 
   EventEmitter.prototype.listenerCount = function(type) {
     return this.listeners(type).length;
@@ -1216,7 +1216,7 @@ function shouldUseNative() {
 		// Detect buggy property enumeration order in older V8 versions.
 
 		// https://bugs.chromium.org/p/v8/issues/detail?id=4118
-		var test1 = new String('abc');  // eslint-disable-line no-new-wrappers
+		var test1 = String('abc');  // eslint-disable-line no-new-wrappers
 		test1[5] = 'de';
 		if (Object.getOwnPropertyNames(test1)[0] === '5') {
 			return false;
@@ -1315,7 +1315,7 @@ function defaultClearTimeout () {
     } catch (e) {
         cachedClearTimeout = defaultClearTimeout;
     }
-} ())
+} ());
 function runTimeout(fun) {
     if (cachedSetTimeout === setTimeout) {
         //normal enviroments in sane situations
@@ -1452,7 +1452,7 @@ process.emit = noop;
 process.prependListener = noop;
 process.prependOnceListener = noop;
 
-process.listeners = function (name) { return [] }
+process.listeners = function (name) { return [] };
 
 process.binding = function (name) {
     throw new Error('process.binding is not supported');
@@ -1465,88 +1465,6 @@ process.chdir = function (dir) {
 process.umask = function() { return 0; };
 
 },{}],5:[function(require,module,exports){
-var bundleFn = arguments[3];
-var sources = arguments[4];
-var cache = arguments[5];
-
-var stringify = JSON.stringify;
-
-module.exports = function (fn, options) {
-    var wkey;
-    var cacheKeys = Object.keys(cache);
-
-    for (var i = 0, l = cacheKeys.length; i < l; i++) {
-        var key = cacheKeys[i];
-        var exp = cache[key].exports;
-        // Using babel as a transpiler to use esmodule, the export will always
-        // be an object with the default export as a property of it. To ensure
-        // the existing api and babel esmodule exports are both supported we
-        // check for both
-        if (exp === fn || exp && exp.default === fn) {
-            wkey = key;
-            break;
-        }
-    }
-
-    if (!wkey) {
-        wkey = Math.floor(Math.pow(16, 8) * Math.random()).toString(16);
-        var wcache = {};
-        for (var i = 0, l = cacheKeys.length; i < l; i++) {
-            var key = cacheKeys[i];
-            wcache[key] = key;
-        }
-        sources[wkey] = [
-            'function(require,module,exports){' + fn + '(self); }',
-            wcache
-        ];
-    }
-    var skey = Math.floor(Math.pow(16, 8) * Math.random()).toString(16);
-
-    var scache = {}; scache[wkey] = wkey;
-    sources[skey] = [
-        'function(require,module,exports){' +
-            // try to call default if defined to also support babel esmodule exports
-            'var f = require(' + stringify(wkey) + ');' +
-            '(f.default ? f.default : f)(self);' +
-        '}',
-        scache
-    ];
-
-    var workerSources = {};
-    resolveSources(skey);
-
-    function resolveSources(key) {
-        workerSources[key] = true;
-
-        for (var depPath in sources[key][1]) {
-            var depKey = sources[key][1][depPath];
-            if (!workerSources[depKey]) {
-                resolveSources(depKey);
-            }
-        }
-    }
-
-    var src = '(' + bundleFn + ')({'
-        + Object.keys(workerSources).map(function (key) {
-            return stringify(key) + ':['
-                + sources[key][0]
-                + ',' + stringify(sources[key][1]) + ']'
-            ;
-        }).join(',')
-        + '},{},[' + stringify(skey) + '])'
-    ;
-
-    var URL = window.URL || window.webkitURL || window.mozURL || window.msURL;
-
-    var blob = new Blob([src], { type: 'text/javascript' });
-    if (options && options.bare) { return blob; }
-    var workerUrl = URL.createObjectURL(blob);
-    var worker = new Worker(workerUrl);
-    worker.objectURL = workerUrl;
-    return worker;
-};
-
-},{}],6:[function(require,module,exports){
 /**
  * @fileOverview
  * @author Russell Toris - rctoris@wpi.edu
@@ -1576,11 +1494,11 @@ assign(ROSLIB, require('./urdf'));
 
 module.exports = ROSLIB;
 
-},{"./actionlib":12,"./core":21,"./math":26,"./tf":29,"./urdf":41,"object-assign":3}],7:[function(require,module,exports){
+},{"./actionlib":11,"./core":20,"./math":25,"./tf":28,"./urdf":40,"object-assign":3}],6:[function(require,module,exports){
 (function (global){
 global.ROSLIB = require('./RosLib');
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./RosLib":6}],8:[function(require,module,exports){
+},{"./RosLib":5}],7:[function(require,module,exports){
 /**
  * @fileOverview
  * @author Russell Toris - rctoris@wpi.edu
@@ -1725,7 +1643,7 @@ ActionClient.prototype.dispose = function() {
 
 module.exports = ActionClient;
 
-},{"../core/Message":13,"../core/Topic":20,"eventemitter2":2}],9:[function(require,module,exports){
+},{"../core/Message":12,"../core/Topic":19,"eventemitter2":2}],8:[function(require,module,exports){
 /**
  * @fileOverview
  * @author Justin Young - justin@oodar.com.au
@@ -1814,7 +1732,7 @@ ActionListener.prototype.__proto__ = EventEmitter2.prototype;
 
 module.exports = ActionListener;
 
-},{"../core/Message":13,"../core/Topic":20,"eventemitter2":2}],10:[function(require,module,exports){
+},{"../core/Message":12,"../core/Topic":19,"eventemitter2":2}],9:[function(require,module,exports){
 /**
  * @fileOverview
  * @author Russell Toris - rctoris@wpi.edu
@@ -1904,7 +1822,7 @@ Goal.prototype.cancel = function() {
 };
 
 module.exports = Goal;
-},{"../core/Message":13,"eventemitter2":2}],11:[function(require,module,exports){
+},{"../core/Message":12,"eventemitter2":2}],10:[function(require,module,exports){
 /**
  * @fileOverview
  * @author Laura Lindzey - lindzey@gmail.com
@@ -2113,7 +2031,7 @@ SimpleActionServer.prototype.setPreempted = function() {
 };
 
 module.exports = SimpleActionServer;
-},{"../core/Message":13,"../core/Topic":20,"eventemitter2":2}],12:[function(require,module,exports){
+},{"../core/Message":12,"../core/Topic":19,"eventemitter2":2}],11:[function(require,module,exports){
 var Ros = require('../core/Ros');
 var mixin = require('../mixin');
 
@@ -2126,7 +2044,7 @@ var action = module.exports = {
 
 mixin(Ros, ['ActionClient', 'SimpleActionServer'], action);
 
-},{"../core/Ros":15,"../mixin":27,"./ActionClient":8,"./ActionListener":9,"./Goal":10,"./SimpleActionServer":11}],13:[function(require,module,exports){
+},{"../core/Ros":14,"../mixin":26,"./ActionClient":7,"./ActionListener":8,"./Goal":9,"./SimpleActionServer":10}],12:[function(require,module,exports){
 /**
  * @fileoverview
  * @author Brandon Alexander - baalexander@gmail.com
@@ -2145,7 +2063,7 @@ function Message(values) {
 }
 
 module.exports = Message;
-},{"object-assign":3}],14:[function(require,module,exports){
+},{"object-assign":3}],13:[function(require,module,exports){
 /**
  * @fileoverview
  * @author Brandon Alexander - baalexander@gmail.com
@@ -2229,14 +2147,13 @@ Param.prototype.delete = function(callback) {
 };
 
 module.exports = Param;
-},{"./Service":16,"./ServiceRequest":17}],15:[function(require,module,exports){
+},{"./Service":15,"./ServiceRequest":16}],14:[function(require,module,exports){
 /**
  * @fileoverview
  * @author Brandon Alexander - baalexander@gmail.com
  */
 
 var WebSocket = require('ws');
-var WorkerSocket = require('../util/workerSocket');
 var socketAdapter = require('./SocketAdapter.js');
 
 var Service = require('./Service');
@@ -2259,7 +2176,7 @@ var EventEmitter2 = require('eventemitter2').EventEmitter2;
  * @param options - possible keys include: <br>
  *   * url (optional) - (can be specified later with `connect`) the WebSocket URL for rosbridge or the node server url to connect using socket.io (if socket.io exists in the page) <br>
  *   * groovyCompatibility - don't use interfaces that changed after the last groovy release or rosbridge_suite and related tools (defaults to true)
- *   * transportLibrary (optional) - one of 'websocket', 'workersocket' (default), 'socket.io' or RTCPeerConnection instance controlling how the connection is created in `connect`.
+ *   * transportLibrary (optional) - one of 'websocket' (default), 'socket.io' or RTCPeerConnection instance controlling how the connection is created in `connect`.
  *   * transportOptions (optional) - the options to use use when creating a connection. Currently only used if `transportLibrary` is RTCPeerConnection.
  */
 function Ros(options) {
@@ -2302,16 +2219,12 @@ Ros.prototype.connect = function(url) {
     this.socket.on('error', this.socket.onerror);
   } else if (this.transportLibrary.constructor.name === 'RTCPeerConnection') {
     this.socket = assign(this.transportLibrary.createDataChannel(url, this.transportOptions), socketAdapter(this));
-  } else if (this.transportLibrary === 'websocket') {
+  } else {
     if (!this.socket || this.socket.readyState === WebSocket.CLOSED) {
       var sock = new WebSocket(url);
       sock.binaryType = 'arraybuffer';
       this.socket = assign(sock, socketAdapter(this));
     }
-  } else if (this.transportLibrary === 'workersocket') {
-    this.socket = assign(new WorkerSocket(url), socketAdapter(this));
-  } else {
-    throw 'Unknown transportLibrary: ' + this.transportLibrary.toString();
   }
 
 };
@@ -2859,7 +2772,7 @@ Ros.prototype.decodeTypeDefs = function(defs) {
 
 module.exports = Ros;
 
-},{"../util/workerSocket":47,"./Service":16,"./ServiceRequest":17,"./SocketAdapter.js":19,"eventemitter2":2,"object-assign":3,"ws":43}],16:[function(require,module,exports){
+},{"./Service":15,"./ServiceRequest":16,"./SocketAdapter.js":18,"eventemitter2":2,"object-assign":3,"ws":42}],15:[function(require,module,exports){
 /**
  * @fileoverview
  * @author Brandon Alexander - baalexander@gmail.com
@@ -2984,7 +2897,7 @@ Service.prototype._serviceResponse = function(rosbridgeRequest) {
 
 module.exports = Service;
 
-},{"./ServiceRequest":17,"./ServiceResponse":18,"eventemitter2":2}],17:[function(require,module,exports){
+},{"./ServiceRequest":16,"./ServiceResponse":17,"eventemitter2":2}],16:[function(require,module,exports){
 /**
  * @fileoverview
  * @author Brandon Alexander - balexander@willowgarage.com
@@ -3003,7 +2916,7 @@ function ServiceRequest(values) {
 }
 
 module.exports = ServiceRequest;
-},{"object-assign":3}],18:[function(require,module,exports){
+},{"object-assign":3}],17:[function(require,module,exports){
 /**
  * @fileoverview
  * @author Brandon Alexander - balexander@willowgarage.com
@@ -3022,7 +2935,7 @@ function ServiceResponse(values) {
 }
 
 module.exports = ServiceResponse;
-},{"object-assign":3}],19:[function(require,module,exports){
+},{"object-assign":3}],18:[function(require,module,exports){
 /**
  * Socket event handling utilities for handling events on either
  * WebSocket and TCP sockets
@@ -3036,6 +2949,7 @@ module.exports = ServiceResponse;
 var decompressPng = require('../util/decompressPng');
 var CBOR = require('cbor-js');
 var typedArrayTagger = require('../util/cborTypedArrayTags');
+var WebSocket = require('ws');
 var BSON = null;
 if(typeof bson !== 'undefined'){
     BSON = bson().BSON;
@@ -3145,7 +3059,7 @@ function SocketAdapter(client) {
 
 module.exports = SocketAdapter;
 
-},{"../util/cborTypedArrayTags":42,"../util/decompressPng":45,"cbor-js":1}],20:[function(require,module,exports){
+},{"../util/cborTypedArrayTags":41,"../util/decompressPng":44,"cbor-js":1,"ws":42}],19:[function(require,module,exports){
 /**
  * @fileoverview
  * @author Brandon Alexander - baalexander@gmail.com
@@ -3184,7 +3098,7 @@ function Topic(options) {
   this.latch = options.latch || false;
   this.queue_size = options.queue_size || 100;
   this.queue_length = options.queue_length || 0;
-  this.reconnect_on_close = options.reconnect_on_close !== undefined ? options.reconnect_on_close : true;
+  this.reconnect_on_close = options.reconnect_on_close || true;
 
   // Check for valid compression types
   if (this.compression && this.compression !== 'png' &&
@@ -3354,7 +3268,7 @@ Topic.prototype.publish = function(message) {
 
 module.exports = Topic;
 
-},{"./Message":13,"eventemitter2":2}],21:[function(require,module,exports){
+},{"./Message":12,"eventemitter2":2}],20:[function(require,module,exports){
 var mixin = require('../mixin');
 
 var core = module.exports = {
@@ -3369,7 +3283,7 @@ var core = module.exports = {
 
 mixin(core.Ros, ['Param', 'Service', 'Topic'], core);
 
-},{"../mixin":27,"./Message":13,"./Param":14,"./Ros":15,"./Service":16,"./ServiceRequest":17,"./ServiceResponse":18,"./Topic":20}],22:[function(require,module,exports){
+},{"../mixin":26,"./Message":12,"./Param":13,"./Ros":14,"./Service":15,"./ServiceRequest":16,"./ServiceResponse":17,"./Topic":19}],21:[function(require,module,exports){
 /**
  * @fileoverview
  * @author David Gossow - dgossow@willowgarage.com
@@ -3442,7 +3356,7 @@ Pose.prototype.getInverse = function() {
 };
 
 module.exports = Pose;
-},{"./Quaternion":23,"./Vector3":25}],23:[function(require,module,exports){
+},{"./Quaternion":22,"./Vector3":24}],22:[function(require,module,exports){
 /**
  * @fileoverview
  * @author David Gossow - dgossow@willowgarage.com
@@ -3536,7 +3450,7 @@ Quaternion.prototype.clone = function() {
 
 module.exports = Quaternion;
 
-},{}],24:[function(require,module,exports){
+},{}],23:[function(require,module,exports){
 /**
  * @fileoverview
  * @author David Gossow - dgossow@willowgarage.com
@@ -3570,7 +3484,7 @@ Transform.prototype.clone = function() {
 };
 
 module.exports = Transform;
-},{"./Quaternion":23,"./Vector3":25}],25:[function(require,module,exports){
+},{"./Quaternion":22,"./Vector3":24}],24:[function(require,module,exports){
 /**
  * @fileoverview
  * @author David Gossow - dgossow@willowgarage.com
@@ -3639,7 +3553,7 @@ Vector3.prototype.clone = function() {
 };
 
 module.exports = Vector3;
-},{}],26:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
 module.exports = {
     Pose: require('./Pose'),
     Quaternion: require('./Quaternion'),
@@ -3647,7 +3561,7 @@ module.exports = {
     Vector3: require('./Vector3')
 };
 
-},{"./Pose":22,"./Quaternion":23,"./Transform":24,"./Vector3":25}],27:[function(require,module,exports){
+},{"./Pose":21,"./Quaternion":22,"./Transform":23,"./Vector3":24}],26:[function(require,module,exports){
 /**
  * Mixin a feature to the core/Ros prototype.
  * For example, mixin(Ros, ['Topic'], {Topic: <Topic>})
@@ -3666,7 +3580,7 @@ module.exports = function(Ros, classes, features) {
     });
 };
 
-},{}],28:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 /**
  * @fileoverview
  * @author David Gossow - dgossow@willowgarage.com
@@ -3887,7 +3801,7 @@ TFClient.prototype.dispose = function() {
 
 module.exports = TFClient;
 
-},{"../actionlib/ActionClient":8,"../actionlib/Goal":10,"../core/Service.js":16,"../core/ServiceRequest.js":17,"../math/Transform":24}],29:[function(require,module,exports){
+},{"../actionlib/ActionClient":7,"../actionlib/Goal":9,"../core/Service.js":15,"../core/ServiceRequest.js":16,"../math/Transform":23}],28:[function(require,module,exports){
 var Ros = require('../core/Ros');
 var mixin = require('../mixin');
 
@@ -3896,7 +3810,7 @@ var tf = module.exports = {
 };
 
 mixin(Ros, ['TFClient'], tf);
-},{"../core/Ros":15,"../mixin":27,"./TFClient":28}],30:[function(require,module,exports){
+},{"../core/Ros":14,"../mixin":26,"./TFClient":27}],29:[function(require,module,exports){
 /**
  * @fileOverview 
  * @author Benjamin Pitzer - ben.pitzer@gmail.com
@@ -3927,7 +3841,7 @@ function UrdfBox(options) {
 }
 
 module.exports = UrdfBox;
-},{"../math/Vector3":25,"./UrdfTypes":39}],31:[function(require,module,exports){
+},{"../math/Vector3":24,"./UrdfTypes":38}],30:[function(require,module,exports){
 /**
  * @fileOverview 
  * @author Benjamin Pitzer - ben.pitzer@gmail.com
@@ -3951,7 +3865,7 @@ function UrdfColor(options) {
 }
 
 module.exports = UrdfColor;
-},{}],32:[function(require,module,exports){
+},{}],31:[function(require,module,exports){
 /**
  * @fileOverview 
  * @author Benjamin Pitzer - ben.pitzer@gmail.com
@@ -3974,7 +3888,7 @@ function UrdfCylinder(options) {
 }
 
 module.exports = UrdfCylinder;
-},{"./UrdfTypes":39}],33:[function(require,module,exports){
+},{"./UrdfTypes":38}],32:[function(require,module,exports){
 /**
  * @fileOverview
  * @author David V. Lu!!  davidvlu@gmail.com
@@ -4067,7 +3981,7 @@ function UrdfJoint(options) {
 
 module.exports = UrdfJoint;
 
-},{"../math/Pose":22,"../math/Quaternion":23,"../math/Vector3":25}],34:[function(require,module,exports){
+},{"../math/Pose":21,"../math/Quaternion":22,"../math/Vector3":24}],33:[function(require,module,exports){
 /**
  * @fileOverview 
  * @author Benjamin Pitzer - ben.pitzer@gmail.com
@@ -4096,7 +4010,7 @@ function UrdfLink(options) {
 }
 
 module.exports = UrdfLink;
-},{"./UrdfVisual":40}],35:[function(require,module,exports){
+},{"./UrdfVisual":39}],34:[function(require,module,exports){
 /**
  * @fileOverview 
  * @author Benjamin Pitzer - ben.pitzer@gmail.com
@@ -4146,7 +4060,7 @@ UrdfMaterial.prototype.assign = function(obj) {
 
 module.exports = UrdfMaterial;
 
-},{"./UrdfColor":31,"object-assign":3}],36:[function(require,module,exports){
+},{"./UrdfColor":30,"object-assign":3}],35:[function(require,module,exports){
 /**
  * @fileOverview 
  * @author Benjamin Pitzer - ben.pitzer@gmail.com
@@ -4183,7 +4097,7 @@ function UrdfMesh(options) {
 }
 
 module.exports = UrdfMesh;
-},{"../math/Vector3":25,"./UrdfTypes":39}],37:[function(require,module,exports){
+},{"../math/Vector3":24,"./UrdfTypes":38}],36:[function(require,module,exports){
 /**
  * @fileOverview 
  * @author Benjamin Pitzer - ben.pitzer@gmail.com
@@ -4280,7 +4194,7 @@ function UrdfModel(options) {
 
 module.exports = UrdfModel;
 
-},{"./UrdfJoint":33,"./UrdfLink":34,"./UrdfMaterial":35,"xmldom":46}],38:[function(require,module,exports){
+},{"./UrdfJoint":32,"./UrdfLink":33,"./UrdfMaterial":34,"xmldom":45}],37:[function(require,module,exports){
 /**
  * @fileOverview 
  * @author Benjamin Pitzer - ben.pitzer@gmail.com
@@ -4302,7 +4216,7 @@ function UrdfSphere(options) {
 }
 
 module.exports = UrdfSphere;
-},{"./UrdfTypes":39}],39:[function(require,module,exports){
+},{"./UrdfTypes":38}],38:[function(require,module,exports){
 module.exports = {
 	URDF_SPHERE : 0,
 	URDF_BOX : 1,
@@ -4310,7 +4224,7 @@ module.exports = {
 	URDF_MESH : 3
 };
 
-},{}],40:[function(require,module,exports){
+},{}],39:[function(require,module,exports){
 /**
  * @fileOverview 
  * @author Benjamin Pitzer - ben.pitzer@gmail.com
@@ -4439,7 +4353,7 @@ function UrdfVisual(options) {
 }
 
 module.exports = UrdfVisual;
-},{"../math/Pose":22,"../math/Quaternion":23,"../math/Vector3":25,"./UrdfBox":30,"./UrdfCylinder":32,"./UrdfMaterial":35,"./UrdfMesh":36,"./UrdfSphere":38}],41:[function(require,module,exports){
+},{"../math/Pose":21,"../math/Quaternion":22,"../math/Vector3":24,"./UrdfBox":29,"./UrdfCylinder":31,"./UrdfMaterial":34,"./UrdfMesh":35,"./UrdfSphere":37}],40:[function(require,module,exports){
 module.exports = require('object-assign')({
     UrdfBox: require('./UrdfBox'),
     UrdfColor: require('./UrdfColor'),
@@ -4452,7 +4366,7 @@ module.exports = require('object-assign')({
     UrdfVisual: require('./UrdfVisual')
 }, require('./UrdfTypes'));
 
-},{"./UrdfBox":30,"./UrdfColor":31,"./UrdfCylinder":32,"./UrdfLink":34,"./UrdfMaterial":35,"./UrdfMesh":36,"./UrdfModel":37,"./UrdfSphere":38,"./UrdfTypes":39,"./UrdfVisual":40,"object-assign":3}],42:[function(require,module,exports){
+},{"./UrdfBox":29,"./UrdfColor":30,"./UrdfCylinder":31,"./UrdfLink":33,"./UrdfMaterial":34,"./UrdfMesh":35,"./UrdfModel":36,"./UrdfSphere":37,"./UrdfTypes":38,"./UrdfVisual":39,"object-assign":3}],41:[function(require,module,exports){
 'use strict';
 
 var UPPER32 = Math.pow(2, 32);
@@ -4572,15 +4486,15 @@ if (typeof module !== 'undefined' && module.exports) {
   module.exports = cborTypedArrayTagger;
 }
 
-},{}],43:[function(require,module,exports){
-module.exports = typeof window !== 'undefined' ? window.WebSocket : WebSocket;
+},{}],42:[function(require,module,exports){
+module.exports = window.WebSocket;
 
-},{}],44:[function(require,module,exports){
+},{}],43:[function(require,module,exports){
 /* global document */
 module.exports = function Canvas() {
 	return document.createElement('canvas');
 };
-},{}],45:[function(require,module,exports){
+},{}],44:[function(require,module,exports){
 /**
  * @fileOverview
  * @author Graeme Yeates - github.com/megawac
@@ -4638,105 +4552,9 @@ function decompressPng(data, callback) {
 
 module.exports = decompressPng;
 
-},{"canvas":44}],46:[function(require,module,exports){
+},{"canvas":43}],45:[function(require,module,exports){
 exports.DOMImplementation = window.DOMImplementation;
 exports.XMLSerializer = window.XMLSerializer;
 exports.DOMParser = window.DOMParser;
 
-},{}],47:[function(require,module,exports){
-var work = require('webworkify');
-var workerSocketImpl = require('./workerSocketImpl');
-
-function WorkerSocket(uri) {
-  this.socket_ = work(workerSocketImpl);
-
-  this.socket_.addEventListener('message', this.handleWorkerMessage_.bind(this));
-
-  this.socket_.postMessage({
-    uri: uri,
-  });
-}
-
-WorkerSocket.prototype.handleWorkerMessage_ = function(ev) {
-  var data = ev.data;
-  if (data instanceof ArrayBuffer || typeof data === 'string') {
-    // binary or JSON message from rosbridge
-    this.onmessage(ev);
-  } else {
-    // control message from the wrapped WebSocket
-    var type = data.type;
-    if (type === 'close') {
-      this.onclose(null);
-    } else if (type === 'open') {
-      this.onopen(null);
-    } else if (type === 'error') {
-      this.onerror(null);
-    } else {
-      throw 'Unknown message from workersocket';
-    }
-  }
-};
-
-WorkerSocket.prototype.send = function(data) {
-  this.socket_.postMessage(data);
-};
-
-WorkerSocket.prototype.close = function() {
-  this.socket_.postMessage({
-    close: true
-  });
-};
-
-module.exports = WorkerSocket;
-
-},{"./workerSocketImpl":48,"webworkify":5}],48:[function(require,module,exports){
-var WebSocket = WebSocket || require('ws');
-
-module.exports = function(self) {
-  var socket = null;
-
-  function handleSocketMessage(ev) {
-    var data = ev.data;
-
-    if (data instanceof ArrayBuffer) {
-      // binary message, transfer for speed
-      self.postMessage(data, [data]);
-    } else {
-      // JSON message, copy string
-      self.postMessage(data);
-    }
-  }
-
-  function handleSocketControl(ev) {
-    self.postMessage({type: ev.type});
-  }
-
-  self.addEventListener('message', function(ev) {
-    var data = ev.data;
-
-    if (typeof data === 'string') {
-      // JSON message from ROSLIB
-      socket.send(data);
-    } else {
-      // control message
-      if (data.hasOwnProperty('close')) {
-        socket.close();
-        socket = null;
-      } else if (data.hasOwnProperty('uri')) {
-        var uri = data.uri;
-
-        socket = new WebSocket(uri);
-        socket.binaryType = 'arraybuffer';
-
-        socket.onmessage = handleSocketMessage;
-        socket.onclose = handleSocketControl;
-        socket.onopen = handleSocketControl;
-        socket.onerror = handleSocketControl;
-      } else {
-        throw 'Unknown message to WorkerSocket';
-      }
-    }
-  });
-};
-
-},{"ws":43}]},{},[7]);
+},{}]},{},[6]);

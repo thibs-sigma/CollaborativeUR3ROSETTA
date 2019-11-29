@@ -1,4 +1,4 @@
-# aid_webapp
+# ur3_simulation_webapp
 
 ## Project setup
 ```
