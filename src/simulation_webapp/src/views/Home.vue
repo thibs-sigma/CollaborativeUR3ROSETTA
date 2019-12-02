@@ -14,7 +14,7 @@
             <a href="choose_action" style="text-decoration: none; color: black">
               <v-flex xs12>
                 <p>
-                  <img :src="require('../assets/logo.png')" style="height: 150px;" />
+                  <img :src="require('../assets/img/control.png')" style="height: 150px; margin-top: 35px; margin-bottom: -30px;" />
                 </p>
                 <br />
                 <span class="headline font-weight-bold">CONTROL DE LA SIMULACION</span>

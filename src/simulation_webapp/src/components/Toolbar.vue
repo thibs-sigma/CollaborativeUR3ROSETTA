@@ -3,7 +3,7 @@
     <v-toolbar-title>
       <a href="/">
         <v-btn to="/" active-class flat depressed href="home">
-          <img :src="require('../assets/logo.png')" style="height: 40px;" href="home" />
+          <img :src="require('../assets/img/control.png')" style="height: 35px;" href="home" />
         </v-btn>
       </a>
     </v-toolbar-title>

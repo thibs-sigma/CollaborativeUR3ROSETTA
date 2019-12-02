@@ -27,7 +27,7 @@
             <v-layout align-center justify-center fill-height>
               <v-flex xs12>
                 <p>
-                  <img :src="require('../assets/logo.png')" style="height: 150px;" />
+                  <img :src="require('../assets/img/demo_gears.png')" style="height: 150px;" />
                 </p>
                 <br />
                 <span class="headline font-weight-bold">FULL DEMO</span>
@@ -55,10 +55,10 @@
             <v-layout align-center justify-center fill-height>
               <v-flex xs12>
                 <p>
-                  <img :src="require('../assets/logo.png')" style="height: 150px;" />
+                  <img :src="require('../assets/img/get_object.png')" style="height: 150px;" />
                 </p>
                 <br />
-                <span class="headline font-weight-bold">GET OBJECT</span>
+                <span class="headline font-weight-bold">MANIP. PIEZA</span>
                 <br />
                 <!-- <span class="subheading">
                 Test 3
@@ -83,10 +83,10 @@
             <v-layout align-center justify-center fill-height>
               <v-flex xs12>
                 <p>
-                  <img :src="require('../assets/logo.png')" style="height: 150px;" />
+                  <img :src="require('../assets/img/manip.png')" style="height: 150px;" />
                 </p>
                 <br />
-                <span class="headline font-weight-bold">MANIPULACIÓN</span>
+                <span class="headline font-weight-bold">MANIP. CONJUNTA</span>
                 <br />
                 <!-- <span class="subheading">
                 Test 3
@@ -115,7 +115,7 @@
             <v-layout align-center justify-center fill-height>
               <v-flex xs12>
                 <p>
-                  <img :src="require('../assets/logo.png')" style="height: 150px;" />
+                  <img :src="require('../assets/img/stop.png')" style="height: 150px;" />
                 </p>
                 <br />
                 <span class="headline font-weight-bold">STOP</span>
@@ -143,7 +143,7 @@
             <v-layout align-center justify-center fill-height>
               <v-flex xs12>
                 <p>
-                  <img :src="require('../assets/logo.png')" style="height: 150px;" />
+                  <img :src="require('../assets/img/reset.png')" style="height: 150px;" />
                 </p>
                 <br />
                 <span class="headline font-weight-bold">RESET</span>
