@@ -10,33 +10,27 @@ let router = new Router({
     {
       path: "/",
       name: "home",
+      component: () => import(/* webpackChunkName: "home" */ "./views/Home.vue")
+    },
+    {
+      path: "/simulation_network",
+      name: "simulation_network",
       component: () =>
         import(
           /* webpackChunkName: "home" */ "./components/simulation_network.vue"
         )
     },
     {
-      path: "/help",
-      name: "help",
-      component: () =>
-        import(
-          /* webpackChunkName: "home" */ "./views/Help.vue"
-        )
-    },
-    {
       path: "/choose_action",
       name: "choose_action",
       component: () =>
-        import(
-          /* webpackChunkName: "home" */ "./components/choose_action.vue"
-        )
+        import(/* webpackChunkName: "home" */ "./components/choose_action.vue")
     }
   ]
 });
 
 router.beforeEach((to, from, next) => {
-
-    next();
+  next();
 });
 
 export default router;

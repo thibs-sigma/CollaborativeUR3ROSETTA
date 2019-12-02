@@ -13,7 +13,7 @@
 
     <!-- Upper-level state machine -->
     <!-- <node pkg="smach_ur3_simu" type="sm_ur3_simu.py" name="logic_state_machine" output="screen"/> -->
-    <node pkg="smach_ur3_simu" type="sm_ur3_simu_noMenu.py" name="logic_state_machine" output="screen"/>
+    <node pkg="smach_ur3_simu" type="sm_ur3_simu_menu.py" name="logic_state_machine" output="screen"/>
     
     <group if="$(arg smach_view)">
         <node pkg="smach_viewer" type="smach_viewer.py" name="state_machine_viewer" output="screen"/>

@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <Toolbar :menu="activeMenu" class="hidden-sm-and-down"></Toolbar>
+    <Toolbar class="hidden-sm-and-down"></Toolbar>
 
     <v-content>
       <!-- <ur3simu /> -->
@@ -8,6 +8,10 @@
     </v-content>
 
     <v-footer class="pa-3">
+      <div>
+        Algún problema? Contacta:
+        <b>Thibaud.Hiltenbrand@sigma-clermont.fr</b>
+      </div>
       <v-spacer></v-spacer>
       <div>ROSETTA Lab - UNCuyo &copy; {{ new Date().getFullYear() }}</div>
     </v-footer>
@@ -24,24 +28,6 @@ export default {
     // ur3simu,
     Toolbar
   },
-  computed: {
-    activeMenu() {
-      var menu = [
-      ];
-      {
-        menu.push({
-          title: "Home",
-          link: "/simulation_network",
-          icon: "fa-pencil-alt"
-        });
-        menu.push({
-          title: "Help",
-          link: "/help",
-          icon: "fa-pencil-alt"
-        });
-      }
-      return menu;
-    }
-  }
+  computed: {}
 };
 </script>

@@ -20,107 +20,92 @@ from std_msgs.msg import String, Bool, Float32, UInt32
 
 def poll_action_request():
     while True:
-
-        if (wheelIndex_value % 6) == 0 :
-            # Debug terminal
-            # print "Tuck arms"
-            desired_object = "tuck"
-            # BAXTER SCREEN OUTPUT
-            image_pub.publish(msg_tuckArms)
-
-        if (wheelIndex_value % 6) == 1 :
-            # Debug terminal
-            # print "Untuck arms"
-            desired_object = "untuck"
-            # BAXTER SCREEN OUTPUT
-            image_pub.publish(msg_untuckArms)
-        
-        elif (wheelIndex_value % 6) == 2 :
+       
+        if (wheelIndex_value % 6) == 2 :
             # Debug terminal
             # print "Assembly task"
-            desired_object = "assembly"
+            desired_action = "assembly"
             # BAXTER SCREEN OUTPUT
             image_pub.publish(msg_assemblyTask)
 
         elif (wheelIndex_value % 6) == 3 :
             # Debug terminal
             # print "Pickup task"
-            desired_object = "pickup"
+            desired_action = "pickup"
             # BAXTER SCREEN OUTPUT
             image_pub.publish(msg_pickupObject)
 
         elif (wheelIndex_value % 6) == 4 :
             # Debug terminal
             # print "Go to home"
-            desired_object = "home"
+            desired_action = "home"
             # BAXTER SCREEN OUTPUT
             image_pub.publish(msg_goHome)
         
         elif (wheelIndex_value % 6) == 5 :
             # Debug terminal
             # print "EXIT!"
-            desired_object = "q"
+            desired_action = "q"
             # BAXTER SCREEN OUTPUT
             image_pub.publish(msg_exit)
 
 
 
-        # desired_object = raw_input('Enter the object you would like to pick up (q to quit): ')
+        # desired_action = raw_input('Enter the object you would like to pick up (q to quit): ')
 
 
-        if navigatorOK_state == True:
-            if desired_object == 'q':
+            if desired_action == 'exit':
                 print "EXIT requested"
                 image_pub.publish(msg_sleeping)
-                desired_object_pub.publish(desired_object)
+                desired_action_pub.publish(desired_action)
                 leftInnerLight_pub.publish('left_inner_light', False)
                 rospy.sleep(1)
                 break
             
-            elif desired_object == 'tuck':
+            elif desired_action == 'tuck':
                 # Debug terminal
                 # print "Finding and picking up ",desired_obobject
                 break
 
-            elif desired_object == 'untuck':
+            elif desired_action == 'untuck':
                 # Debug terminal
-                # print "Finding and picking up ",desired_object
+                # print "Finding and picking up ",desired_action
                 # Switch off button light
                 image_pub.publish(msg_untuckingArms)
-                desired_object_pub.publish(desired_object)
+                desired_action_pub.publish(desired_action)
                 leftInnerLight_pub.publish('left_inner_light', False)
                 rospy.sleep(1)
                 break          
 
-            elif desired_object == 'home':
+            elif desired_action == 'home':
                 # Debug terminal
                 # Switch off button light
                 # image_pub.publish(msg_readyPickup)
                 leftInnerLight_pub.publish('left_inner_light', False)
-                desired_object_pub.publish(desired_object)
+                desired_action_pub.publish(desired_action)
                 print "GOINGHOME requested"
                 rospy.sleep(1)
                 break
 
 
-            elif desired_object == 'assembly':
+            elif desired_action == 'assembly':
                 # Debug terminal
-                # print "Finding and picking up ",desired_object
+                # print "Finding and picking up ",desired_action
                 # Switch off button light
                 image_pub.publish(msg_readyAssembly)
                 leftInnerLight_pub.publish('left_inner_light', False)
-                desired_object_pub.publish(desired_object)
+                desired_action_pub.publish(desired_action)
                 print "ASSEMBLY requested"
                 rospy.sleep(1)
                 break
 
-            elif desired_object == 'pickup':
+            elif desired_action == 'pickup':
                 # Debug terminal
-                # print "Finding and picking up ",desired_object
+                # print "Finding and picking up ",desired_action
                 # Switch off button light
                 image_pub.publish(msg_readyPickup)
                 leftInnerLight_pub.publish('left_inner_light', False)
-                desired_object_pub.publish(desired_object)
+                desired_action_pub.publish(desired_action)
                 print "PICKUP requested"
                 rospy.sleep(1)
                 break

@@ -1,20 +1,12 @@
 <template>
   <div class="hello">
     <v-container>
-      <h1>UR3 simulación - Interfaz de control</h1>
+      <h1>UR3 simulación - Interfaz de control > Red</h1>
       <p>Control de las funcionalidades de la demonstración con V-REP.</p>
-      <p>
-        Algún problema? Contacta: <b>Thibaud.Hiltenbrand@sigma-clermont.fr</b>
-      </p>
       <!-- <p v-if="connected === '1'">Connected!</p> -->
       <br />
       <!-- Definition table -->
-      <v-data-table
-        :headers="headers"
-        :items="ur3simuNetwork"
-        class="elevation-1"
-        hide-actions
-      >
+      <v-data-table :headers="headers" :items="ur3simuNetwork" class="elevation-1" hide-actions>
         <template v-slot:items="props">
           <td>{{ props.item.topic }}</td>
           <td class="text-xs-left">{{ props.item.message_received }}</td>

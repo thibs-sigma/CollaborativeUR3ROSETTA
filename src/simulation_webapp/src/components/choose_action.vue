@@ -3,15 +3,7 @@
     <v-container grid-list-xl justify-center>
       <h1>UR3 simulación - Interfaz de control > Eligir acción</h1>
       <p>Control de las funcionalidades de la demonstración con V-REP.</p>
-      <p>
-        Algún problema? Contacta: <b>Thibaud.Hiltenbrand@sigma-clermont.fr</b>
-      </p>
-      <v-data-table
-        :headers="headers"
-        :items="ur3simuNetwork"
-        class="elevation-1"
-        hide-actions
-      >
+      <v-data-table :headers="headers" :items="ur3simuNetwork" class="elevation-1" hide-actions>
         <template v-slot:items="props">
           <td>{{ props.item.topic }}</td>
           <td class="text-xs-left">{{ props.item.message_received }}</td>
@@ -35,17 +27,14 @@
             <v-layout align-center justify-center fill-height>
               <v-flex xs12>
                 <p>
-                  <img
-                    :src="require('../assets/logo.png')"
-                    style="height: 150px;"
-                  />
+                  <img :src="require('../assets/logo.png')" style="height: 150px;" />
                 </p>
                 <br />
                 <span class="headline font-weight-bold">FULL DEMO</span>
                 <br />
                 <!-- <span class="subheading">
                 Test 3
-              </span> -->
+                </span>-->
                 <br />
               </v-flex>
             </v-layout>
@@ -66,17 +55,14 @@
             <v-layout align-center justify-center fill-height>
               <v-flex xs12>
                 <p>
-                  <img
-                    :src="require('../assets/logo.png')"
-                    style="height: 150px;"
-                  />
+                  <img :src="require('../assets/logo.png')" style="height: 150px;" />
                 </p>
                 <br />
                 <span class="headline font-weight-bold">GET OBJECT</span>
                 <br />
                 <!-- <span class="subheading">
                 Test 3
-              </span> -->
+                </span>-->
                 <br />
               </v-flex>
             </v-layout>
@@ -97,17 +83,14 @@
             <v-layout align-center justify-center fill-height>
               <v-flex xs12>
                 <p>
-                  <img
-                    :src="require('../assets/logo.png')"
-                    style="height: 150px;"
-                  />
+                  <img :src="require('../assets/logo.png')" style="height: 150px;" />
                 </p>
                 <br />
                 <span class="headline font-weight-bold">MANIPULACIÓN</span>
                 <br />
                 <!-- <span class="subheading">
                 Test 3
-              </span> -->
+                </span>-->
                 <br />
               </v-flex>
             </v-layout>
@@ -132,17 +115,14 @@
             <v-layout align-center justify-center fill-height>
               <v-flex xs12>
                 <p>
-                  <img
-                    :src="require('../assets/logo.png')"
-                    style="height: 150px;"
-                  />
+                  <img :src="require('../assets/logo.png')" style="height: 150px;" />
                 </p>
                 <br />
                 <span class="headline font-weight-bold">STOP</span>
                 <br />
                 <!-- <span class="subheading">
                 Test 3
-              </span> -->
+                </span>-->
                 <br />
               </v-flex>
             </v-layout>
@@ -163,17 +143,14 @@
             <v-layout align-center justify-center fill-height>
               <v-flex xs12>
                 <p>
-                  <img
-                    :src="require('../assets/logo.png')"
-                    style="height: 150px;"
-                  />
+                  <img :src="require('../assets/logo.png')" style="height: 150px;" />
                 </p>
                 <br />
                 <span class="headline font-weight-bold">RESET</span>
                 <br />
                 <!-- <span class="subheading">
                 Test 3
-              </span> -->
+                </span>-->
                 <br />
               </v-flex>
             </v-layout>
