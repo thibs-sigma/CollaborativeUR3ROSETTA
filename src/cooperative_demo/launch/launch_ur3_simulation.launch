@@ -2,9 +2,13 @@
 
     <!-- ROS PARAMETERS  -->
     <arg name="smach_view" default="false" />
+    <arg name="vrep_simu" default="true" />
+    <arg name="webapp" default="true" />
 
-    <!-- MoveIt! Planning node -->
-    <!-- <include file="$(find vrep_ros_control_example)/launch/vrep_UR.launch"> </include> -->
+    <!-- V-REP simulation -->
+    <group if="$(arg vrep_simu)">
+        <include file="$(find vrep_ros_control)/launch/vrep_UR.launch"> </include>
+    </group>
 
     <!-- MoveIt! Planning node -->
     <include file="$(find dual_ur3_moveit_config)/launch/multiple_ur3_moveit_planning_execution.launch">
@@ -17,6 +21,12 @@
     
     <group if="$(arg smach_view)">
         <node pkg="smach_viewer" type="smach_viewer.py" name="state_machine_viewer" output="screen"/>
+    </group>
+
+    <!-- Webapp -->
+    <group if="$(arg webapp)">
+        <include file="$(find rosbridge_server)/launch/rosbridge_websocket.launch"> </include>
+        <node name="loader_webapp" pkg="cooperative_demo" type="launch_webapp.sh" />
     </group>
 
 </launch>

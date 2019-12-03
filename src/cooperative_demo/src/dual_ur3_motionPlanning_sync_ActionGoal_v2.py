@@ -364,7 +364,7 @@ def dual_grasping_jointStates():
     rospy.logwarn('Trajectory executed! Going to next step...')
         
     # Wait
-    rospy.sleep(1)
+    rospy.sleep(2)
 
     # DEBUG wait
     # raw_input('Confirm STEP2?')
@@ -478,7 +478,7 @@ def dual_grasping_AdjustjointStates():
     rospy.logwarn('Trajectory executed! Going to next step...')
         
     # Wait
-    rospy.sleep(1)
+    rospy.sleep(2)
 
     # DEBUG wait
     # raw_input('Confirm STEP3?')
