@@ -18,7 +18,6 @@ A continuación se describen los pasos principales de instalación y funcionamie
 
 <!-- [![Watch the video]()](https://youtu.be/jia6zDLpsHE) -->
 
-
 ## Dependencias (a instalar por separado, antes de compilar el proyecto)
 
 - Ubuntu 16.04 LTS + ROS Kinetic
@@ -27,19 +26,43 @@ A continuación se describen los pasos principales de instalación y funcionamie
 - OpenCV (probado con `OpenCV 3.3.1-dev`)
 - V-REP PRO EDU 3.6.2 (instrucciones y descargado http://www.coppeliarobotics.com/downloads.html)
 
-## Instalación
+## Instalación de V-REP
 
-- `git clone` ese repo en una carpeta personal (por ejemplo, `CooperationSimu_ws/src`)
+- Descargar V-REP 3.6.2 acá: http://coppeliarobotics.com/previousVersions (3.6.2) 
+  - La versión actual de V-REP, ahora llamado CoppeliaSim, es la 4.0.0. No ha sido probado con ese proyecto. Así se aconseja descargar la ultima version de V-REP 3.6.2.
+- Descomprimir el paquete, luego va en la carpeta descargada y ejecuta el script de installación
+  - ```bash
+    $ cd *CARPETA DESCARGADA*
+    $ ./vrep.sh
+- Luego añadir las lineas siguientes al archivo `.bashrc` (`gedit .bashrc` en la `home`)
+  - `export VREP_ROOT=/home/**NOMBRE DE USUARIO**/V-REP_PRO_EDU_V3_6_2_Ubuntu16_04`
+  - `export VREP_ROOT_DIR=/home/**NOMBRE DE USUARIO**/V-REP_PRO_EDU_V3_6_2_Ubuntu16_04`
+
+- Para verificar la instalación, ejectua:
+  - ```bash
+    $ cd $VREP_ROOT
+    $ ./vrep.sh
+    ``` 
+
+- Para la installación de *VREP ROS*, seguir ese [tutorial](http://www.coppeliarobotics.com/helpFiles/en/ros1Tutorial.htm)
+
+## Creación del ROS Workspace
+
+- `git clone` ese repo en tu carpeta personal (`home`)
 - Compila con `catkin_make`
-- Añade `source /home/YOUR_USERNAME/CooperationSimu_ws/devel/setup.bash` a tu archivo `.bashrc`
+- Añade `source /home/**NOMBRE DE USUARIO**/CollaborativeUR3ROSETTA/devel/setup.bash` a tu archivo `.bashrc` (edición accessible con `gedit .bashrc` en la `home`)
+- Luego copiar el archivo plugin de *ROS_Control* `libv_repExtRosControl.so` en la carpeta `CollaborativeUR3ROSETTA/devel/lib` y poner ese plugin en la carpeta raíz de V-REP: `/V-REP_PRO_EDU_V3_6_2_Ubuntu16_04` por ejemplo
 
-- VREP Installation : http://coppeliarobotics.com/previousVersions (3.6.2) + untar + añadir al bashrc
-  - export VREP_ROOT=/home/thib/V-REP_PRO_EDU_V3_6_2_Ubuntu16_04
-  - export VREP_ROOT_DIR=/home/thib/V-REP_PRO_EDU_V3_6_2_Ubuntu16_04
-  - ./vrep.sh para verificar instalación
-- *VREP ROS* --> seguir ese [![tutorial]()](http://www.coppeliarobotics.com/helpFiles/en/ros1Tutorial.htm)
-- Cambiar *launch_vrep.sh*
 
 ## Lanzamiento
 
-TO DO
+Una vez todo compilado, ejecuta los comandos siguientes.
+
+- Abre un Terminal, y ejecuta el comando siguiente:
+  - `$ roslaunch cooperative_demo launch_ur3_simulation.launch`
+
+- Ese único comando permite lanzar todos los nodos necesarios a la ejecución de la demostración (V-REP, MoveIt!, ros_control, etc.), incluyendo la interfaz de control de la simulación.
+
+- Para acceder a la interfaz de control de la simulación:
+  - Abre un navegador Web (preferiblemente Chrome o Firefox)
+  - Aceda a la dirección siguiente: `localhost:8080`
