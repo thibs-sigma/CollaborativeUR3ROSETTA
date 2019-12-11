@@ -14,6 +14,8 @@ A continuación se describen los pasos principales de instalación y funcionamie
 
 ## Video
 
+![Global demo](04global_demo.gif)
+
 <!-- [![Watch the video]()](https://youtu.be/jia6zDLpsHE) -->
 
 
