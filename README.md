@@ -8,7 +8,7 @@ La demostración incluye las tareas siguientes, controladas por una máquina de 
 - Manipulación sincronizada de pieza
 - Manipulación conjunta de una caja
 
-Para obtener una documentación e instrucciones sobre cómo instalar y usar este paquete, consulte el [wiki] (https://github.com/thibs-sigma/CollaborativeUR3ROSETTA/wiki).
+Para obtener una documentación e instrucciones sobre cómo instalar y usar este paquete, consulte el [wiki](https://github.com/thibs-sigma/CollaborativeUR3ROSETTA/wiki).
 
 A continuación se describen los pasos principales de instalación y funcionamiento.
 
