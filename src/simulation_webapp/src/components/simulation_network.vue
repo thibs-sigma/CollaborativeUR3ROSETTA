@@ -2,7 +2,11 @@
   <div class="hello">
     <v-container>
       <h1>UR3 simulación - Interfaz de control > Red</h1>
-      <p>Control de las funcionalidades de la demonstración con V-REP.</p>
+      <p>
+        Acá están listados los Topics relevantes por analisis de la demonstración.
+        <br />Para ver todos los Topics disponibles, ejectua
+        <b>rostopic list</b> en un Terminal.
+      </p>
       <!-- <p v-if="connected === '1'">Connected!</p> -->
       <br />
       <!-- Definition table -->
@@ -49,11 +53,21 @@ var ros = new ROSLIB.Ros({ url: "ws://localhost:9090" });
 // Subscribing to a Topic
 // ----------------------
 
+var topicsClient = new ROSLIB.Service({
+  ros: ros,
+  name: "/rosapi/topics",
+  serviceType: "rosapi/Topics"
+});
+
+var request = new ROSLIB.ServiceRequest();
+
 var listener_string = new ROSLIB.Topic({
   ros: ros,
   name: "/listener",
   messageType: "std_msgs/String"
 });
+
+var list_topics = [];
 
 export default {
   name: "ur3simu_network",
@@ -116,6 +130,18 @@ export default {
         // Echo on table
         self.ur3simuNetwork[0].topic = listener_string.name;
         self.ur3simuNetwork[0].message_received = self.listener_string.data;
+      });
+
+      topicsClient.callService(request, function(result) {
+        console.log("Getting topics...");
+        for (let index = 0; index < result.topics.length; index++) {
+          list_topics[index] = result.topics[index];
+        }
+
+        // self.ur3simuNetwork[0].message_received = self.listener_string.data;
+        console.log(result.topics);
+        console.log(result.topics.length);
+        // self.ur3simuNetwork[0].topic = list_topics[0];
       });
     }
   },

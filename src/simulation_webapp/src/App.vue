@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <Toolbar class="hidden-sm-and-down"></Toolbar>
+    <Toolbar></Toolbar>
 
     <v-content>
       <!-- <ur3simu /> -->
@@ -15,18 +15,21 @@
       <v-spacer></v-spacer>
       <div>ROSETTA Lab - UNCuyo &copy; {{ new Date().getFullYear() }}</div>
     </v-footer>
+    <StatusConnexion />
   </v-app>
 </template>
 
 <script>
 // import ur3simu from "./components/simulation_network";
 import Toolbar from "./components/Toolbar";
+import StatusConnexion from "./components/StatusConnexion";
 
 export default {
   name: "App",
   components: {
     // ur3simu,
-    Toolbar
+    Toolbar,
+    StatusConnexion
   },
   computed: {}
 };
