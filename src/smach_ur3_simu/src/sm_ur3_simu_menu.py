@@ -56,20 +56,59 @@ class RESET(State):
 
         return 'success'
 
-class RESETPOSE(State):
+class RESETSIMU(State):
     def __init__(self):
         State.__init__(self, outcomes=['success'])
+
+        # Publishers
+        self.stop_pub = rospy.Publisher("/stopSimulation", Bool, queue_size=1)
+        self.start_pub = rospy.Publisher("/startSimulation", Bool, queue_size=1)
     
     def execute(self, userdata):
-        print("Inside RESETPOSE state machine\n")
+        print("Inside RESETSIMU state machine\n")
 
-        # Call 'ur3_vision' script
+        # Call 'dual_ur3_resetPose' script
+        subprocess.check_call(user + "/CollaborativeUR3ROSETTA/src/cooperative_demo/src/dual_ur3_resetPose.py")
 
-        # subprocess.check_call(user + "/CollaborativeUR3ROSETTA/src/cooperative_demo/src/dual_ur3_resetPose.py")
         rospy.loginfo("Robot state reset!")
 
         # Wait for termination
         rospy.sleep(1)
+
+        # STOP SIMU VREP
+        self.stop_pub.publish(True)
+
+        # Wait a bit
+        rospy.sleep(1)
+
+        # START AGAIN SIMU VREP
+        self.start_pub.publish(True)
+
+        # Wait a bit
+        rospy.sleep(1)
+
+        return 'success'
+
+
+class STOPSIMU(State):
+    def __init__(self):
+        State.__init__(self, outcomes=['success'])
+
+        # Publishers
+        self.stop_pub = rospy.Publisher("/stopSimulation", Bool, queue_size=1)
+
+    def execute(self, userdata):
+        print("Inside STOPSIMU state machine\n")
+
+        # Stop the simulation
+        self.stop_pub.publish(True)
+
+        rospy.loginfo("Robot and simulation stopped!")
+
+        # Wait for termination
+        rospy.sleep(1)
+
+        rospy.signal_shutdown('STOP requested')
 
         return 'success'
 
@@ -223,10 +262,12 @@ if __name__ == "__main__":
             # Reset the dual UR3 simulation
             StateMachine.add('RESET', RESET(), transitions={'success':'CHOOSE_ACTION'})
 
-            StateMachine.add('RESET_POSE', RESETPOSE(), transitions={'success':'CHOOSE_ACTION'})
+            StateMachine.add('RESET_POSE', RESETSIMU(), transitions={'success': 'CHOOSE_ACTION'})
+            
+            StateMachine.add('STOP_SIMU', STOPSIMU(), transitions={'success':'stop'})
 
             # Go to CHOOSE_ACTION state
-            StateMachine.add('CHOOSE_ACTION', CHOOSEACTION(), transitions={'getObject': 'PICKUPONLY_ACTION', 'manipSync': 'MANIP_ACTION', 'fullDemo': 'PICKUP_ACTION', 'resetPose': 'RESET_POSE', 'stop': 'stop'})
+            StateMachine.add('CHOOSE_ACTION', CHOOSEACTION(), transitions={'getObject': 'PICKUPONLY_ACTION', 'manipSync': 'MANIP_ACTION', 'fullDemo': 'PICKUP_ACTION', 'resetPose': 'RESET_POSE', 'stop': 'STOP_SIMU'})
 
             # GET OBJECT TASK (Concurrence allow to execute two parallel states)
             sm_pickup = Concurrence(outcomes=['success', 'fail'], default_outcome='fail', outcome_map={'success':{'UR3_1_VISION':'UR3_1_visionOK', 'UR3_2_VISION':'UR3_2_visionOK', 'GETOBJECT':'pickupOK'}, 'fail':{'UR3_1_VISION':'stop', 'UR3_2_VISION':'stop', 'GETOBJECT':'stop'}})

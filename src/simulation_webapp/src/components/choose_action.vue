@@ -3,7 +3,12 @@
     <v-container grid-list-xl justify-center>
       <h1>UR3 simulación - Interfaz de control > Eligir acción</h1>
       <p>Control de las funcionalidades de la demonstración con V-REP.</p>
-      <v-data-table :headers="headers" :items="ur3simuNetwork" class="elevation-1" hide-actions>
+      <v-data-table
+        :headers="headers"
+        :items="ur3simuNetwork"
+        class="elevation-1"
+        hide-actions
+      >
         <template v-slot:items="props">
           <td>{{ props.item.topic }}</td>
           <td class="text-xs-left">{{ props.item.message_received }}</td>
@@ -27,7 +32,10 @@
             <v-layout align-center justify-center fill-height>
               <v-flex xs12>
                 <p>
-                  <img :src="require('../assets/img/demo_gears.png')" style="height: 150px;" />
+                  <img
+                    :src="require('../assets/img/demo_gears.png')"
+                    style="height: 150px;"
+                  />
                 </p>
                 <br />
                 <span class="headline font-weight-bold">FULL DEMO</span>
@@ -55,7 +63,10 @@
             <v-layout align-center justify-center fill-height>
               <v-flex xs12>
                 <p>
-                  <img :src="require('../assets/img/get_object.png')" style="height: 150px;" />
+                  <img
+                    :src="require('../assets/img/get_object.png')"
+                    style="height: 150px;"
+                  />
                 </p>
                 <br />
                 <span class="headline font-weight-bold">MANIP. PIEZA</span>
@@ -83,7 +94,10 @@
             <v-layout align-center justify-center fill-height>
               <v-flex xs12>
                 <p>
-                  <img :src="require('../assets/img/manip.png')" style="height: 150px;" />
+                  <img
+                    :src="require('../assets/img/manip.png')"
+                    style="height: 150px;"
+                  />
                 </p>
                 <br />
                 <span class="headline font-weight-bold">MANIP. CONJUNTA</span>
@@ -103,6 +117,7 @@
       <!-- BEGIN LINE 2 -->
       <v-layout align-center justify-center row wrap>
         <!-- MENU TILE 4 -->
+
         <v-card
           height="270"
           width="300"
@@ -110,24 +125,83 @@
           ripple
           class="mx-3 my-2"
           @click.native="send_action(4)"
+          @click.stop="dialog = true"
         >
           <v-container grid-list-md text-xs-center>
             <v-layout align-center justify-center fill-height>
               <v-flex xs12>
                 <p>
-                  <img :src="require('../assets/img/stop.png')" style="height: 150px;" />
+                  <img
+                    :src="require('../assets/img/stop.png')"
+                    style="height: 150px;"
+                  />
                 </p>
                 <br />
                 <span class="headline font-weight-bold">STOP</span>
                 <br />
                 <!-- <span class="subheading">
-                Test 3
+                  Test 3
                 </span>-->
                 <br />
               </v-flex>
             </v-layout>
           </v-container>
         </v-card>
+        <v-dialog v-model="dialog" persistent width="1200">
+          <v-card>
+            <v-card-title class="headline grey lighten-2" primary-title
+              >STOP ACTION</v-card-title
+            >
+
+        <v-card-text>
+            <div style="text-align:center;">
+              <v-flex xs12 v-if="!next"> <!-- First message -->
+                <v-icon size="500" color="green">check_circle</v-icon>
+                <br />
+                <span class="headline font-weight-bold"
+                  >Acción 'STOP' enviada con exito!</span
+                >
+                <br />
+              </v-flex>
+              <v-flex xs12 v-else> <!-- Second message -->
+                <v-icon size="100" color="black">playlist_add_check</v-icon>
+                <br />
+                <span class="headline font-weight-bold">
+                  Ahora, seguir las acciones suiguientes:<br/>
+                </span>
+                <br/>
+                <span class="headline" style="text-align:left;">
+                  <ul>
+                    <li>1. Verificar que la simulación de V-REP se terminó</li> <br/>
+                    <li>2. Cerrar la ventana de V-REP (si pregunta si debe guardar las modificaciones, eligir 'No')</li> <br/>
+                    <li>3. Verificar la salida de consola en el Terminal <i>(Received shutdown request...)</i></li><br/>
+                    <li>4. <i>Kill</i> todo, presionando <i>CTRL + C</i></li><br/>
+                    <li>5. Cerrar esa applicación</li><br/>
+                  </ul>
+                </span>
+                <br />
+              </v-flex>
+            </div>
+          </v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn v-if="!next" color="orange" text dark @click="next = true"
+                >Siguiente...</v-btn
+              >
+              <v-btn
+                v-else
+                color="green"
+                text
+                dark
+                @click="
+                  dialog = false;
+                  next = false;
+                "
+                >Listo!</v-btn
+              >
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
         <!-- END MENU TILE 4 -->
 
         <!-- MENU TILE 5 -->
@@ -143,7 +217,10 @@
             <v-layout align-center justify-center fill-height>
               <v-flex xs12>
                 <p>
-                  <img :src="require('../assets/img/reset.png')" style="height: 150px;" />
+                  <img
+                    :src="require('../assets/img/reset.png')"
+                    style="height: 150px;"
+                  />
                 </p>
                 <br />
                 <span class="headline font-weight-bold">RESET</span>
@@ -208,6 +285,10 @@ export default {
   name: "ur3simu_network",
   data() {
     return {
+      dialog: false,
+      next: false,
+      end: false,
+
       connected: "",
       // TEST SIMPLE LISTENER
       // Initialize values

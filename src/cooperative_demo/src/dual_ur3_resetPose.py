@@ -173,21 +173,22 @@ def UR3_resetPose():
     default_joint_states_UR3_1 = arm1.get_current_joint_values()
     default_joint_states_UR3_2 = arm2.get_current_joint_values()
 
-    # Gripper TOP view for GRASPING OBJECT - UR3 1
-    default_joint_states_UR3_1[0] = 1.5710452795028687
-    default_joint_states_UR3_1[1] = 0.0
-    default_joint_states_UR3_1[2] = 0.0
-    default_joint_states_UR3_1[3] = 0.0
-    default_joint_states_UR3_1[4] = 0.0
-    default_joint_states_UR3_1[5] = 3.14166522026062
+    # INITIAL POSITION - UR3 1
+    default_joint_states_UR3_1[0] = 1.5710314512252808
+    default_joint_states_UR3_1[1] = 0.0035011768341064453
+    default_joint_states_UR3_1[2] = 0.0005176067352294922
+    default_joint_states_UR3_1[3] = 0.0004112720489501953
+    default_joint_states_UR3_1[4] = -0.0008955001831054688
+    default_joint_states_UR3_1[5] = 3.12717342376709
 
-    # Test 1 (gripper TOP view) - UR3 2
-    default_joint_states_UR3_2[0] = 1.5709632635116577
-    default_joint_states_UR3_2[1] = 0.0
-    default_joint_states_UR3_2[2] = 0.0
-    default_joint_states_UR3_2[3] = 0.0
-    default_joint_states_UR3_2[4] = 0.0
-    default_joint_states_UR3_2[5] = 3.1417062282562256
+    # INITIAL POSITION - UR3 2
+    default_joint_states_UR3_2[0] = 1.570970892906189
+    default_joint_states_UR3_2[1] = 0.00843501091003418
+    default_joint_states_UR3_2[2] = 0.00045680999755859375
+    default_joint_states_UR3_2[3] = 0.0002288818359375
+    default_joint_states_UR3_2[4] = -0.0004999637603759766
+    default_joint_states_UR3_2[5] = 3.127167224884033
+
 
     # Initial position
     arm1.set_joint_value_target(default_joint_states_UR3_1)
@@ -244,7 +245,6 @@ def UR3_resetPose():
     return
 
 
-
 if __name__ == "__main__":
     rospy.init_node('dual_ur3_getObject')
     try:
@@ -283,12 +283,14 @@ if __name__ == "__main__":
 
         rospy.logwarn("Reseting the pose...")
 
+        # STEP1
         status_controller_UR3_1 = 0
         status_controller_UR3_2 = 0
-
         reset = True
+
         UR3_resetPose()
 
+        # Exit program
         rospy.signal_shutdown("Reset pose OK")
 
         rospy.spin()
