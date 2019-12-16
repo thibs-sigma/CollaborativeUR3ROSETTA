@@ -3,18 +3,6 @@
     <v-container grid-list-xl justify-center>
       <h1>UR3 simulación - Interfaz de control > Eligir acción</h1>
       <p>Control de las funcionalidades de la demonstración con V-REP.</p>
-      <v-data-table
-        :headers="headers"
-        :items="ur3simuNetwork"
-        class="elevation-1"
-        hide-actions
-      >
-        <template v-slot:items="props">
-          <td>{{ props.item.topic }}</td>
-          <td class="text-xs-left">{{ props.item.message_received }}</td>
-        </template>
-      </v-data-table>
-      <!-- <p v-if="connected === '1'">Connected!</p> -->
       <br />
 
       <!-- BEGIN LINE 1 -->
@@ -451,32 +439,8 @@
 import ROS from "../ros_build/roslib.js";
 
 var ros = new ROSLIB.Ros({ url: "ws://localhost:9090" });
-// var ros_rds = new ROSLIB.Ros({ url: "ws://localhost:9090" });
 
-// Publishing a Topic
-// ------------------
-
-// var cmdVel = new ROSLIB.Topic({
-//   ros : ros,
-//   name : '/cmd_vel',
-//   messageType : 'geometry_msgs/Twist'
-// });
-
-// var twist = new ROSLIB.Message({
-//   linear : {
-//     x : 0.1,
-//     y : 0.2,
-//     z : 0.3
-//   },
-//   angular : {
-//     x : -0.1,
-//     y : -0.2,
-//     z : -0.3
-//   }
-// });
-// cmdVel.publish(twist);
-
-// Subscribing to a Topic
+// ROS Topics
 // ----------------------
 
 var desired_action = new ROSLIB.Topic({
@@ -507,26 +471,7 @@ export default {
       // TEST SIMPLE LISTENER
       // Initialize values
       desired_action: "",
-      desired_action_data: "",
-
-      headers: [
-        {
-          text: "Topics",
-          align: "left",
-          sortable: true,
-          value: "name"
-        },
-
-        // NAME HEADERS
-        { text: "Mensaje recibido", value: "message_received" }
-      ],
-      ur3simuNetwork: [
-        {
-          // Default text if nothing received (to be defined for each line)
-          topic: "Ningun topic disponible...",
-          message_received: "Ningun mensaje recibido..."
-        }
-      ]
+      desired_action_data: ""
     };
   },
   mounted() {
@@ -558,9 +503,6 @@ export default {
           "Received message on " + desired_action.name + ": " + message.data
         );
         self.desired_action = message;
-        // Echo on table
-        self.ur3simuNetwork[0].topic = desired_action.name;
-        self.ur3simuNetwork[0].message_received = self.desired_action.data;
       });
     },
     send_action(request_action_click) {
