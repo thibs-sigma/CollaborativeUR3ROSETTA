@@ -14,6 +14,7 @@
         <template v-slot:items="props">
           <td>{{ props.item.topic }}</td>
           <td class="text-xs-left">{{ props.item.message_received }}</td>
+          <td class="text-xs-left">{{ props.item.unidad }}</td>
         </template>
       </v-data-table>
     </v-container>
@@ -67,6 +68,24 @@ var listener_string = new ROSLIB.Topic({
   messageType: "std_msgs/String"
 });
 
+var jointStates = new ROSLIB.Topic({
+  ros: ros,
+  name: "/joint_states",
+  messageType: "sensor_msgs/JointState"
+});
+
+var UR3_1_gripperForce = new ROSLIB.Topic({
+  ros: ros,
+  name: "/UR3_1/gripper_force",
+  messageType: "sensor_msgs/JointState"
+});
+
+var UR3_2_gripperForce = new ROSLIB.Topic({
+  ros: ros,
+  name: "/UR3_2/gripper_force",
+  messageType: "sensor_msgs/JointState"
+});
+
 var list_topics = [];
 
 export default {
@@ -78,6 +97,15 @@ export default {
       listener_string: "",
       listener_string_data: "",
 
+      jointStates: "",
+      jointStates_data: "",
+
+      UR3_1_gripperForce: "",
+      UR3_1_gripperForce_data: "",
+
+      UR3_2_gripperForce: "",
+      UR3_2_gripperForce_data: "",
+
       headers: [
         {
           text: "Topics",
@@ -87,13 +115,27 @@ export default {
         },
 
         // NAME HEADERS
-        { text: "Mensaje recibido", value: "message_received" }
+        { text: "Mensaje recibido", value: "message_received" },
+        { text: "Unidad", value: "unidad" }
       ],
       ur3simuNetwork: [
         {
           // Default text if nothing received (to be defined for each line)
           topic: "Ningun topic disponible...",
-          message_received: "Ningun mensaje recibido..."
+          message_received: "Ningun mensaje recibido...",
+          unidad: "?"
+        },
+        {
+          // Default text if nothing received (to be defined for each line)
+          topic: "Ningun topic disponible...",
+          message_received: "Ningun mensaje recibido...",
+          unidad: "?"
+        },
+        {
+          // Default text if nothing received (to be defined for each line)
+          topic: "Ningun topic disponible...",
+          message_received: "Ningun mensaje recibido...",
+          unidad: "?"
         }
       ]
     };
@@ -132,6 +174,43 @@ export default {
         self.ur3simuNetwork[0].message_received = self.listener_string.data;
       });
 
+      // JOINT STATES
+      jointStates.subscribe(function(message) {
+        console.log(
+          "Received message on " + jointStates.name
+        );
+        self.jointStates = message;
+        // Echo on table
+        self.ur3simuNetwork[0].topic = jointStates.name;
+        self.ur3simuNetwork[0].message_received = self.jointStates.position;
+        self.ur3simuNetwork[0].unidad = "rad";
+      });
+
+      // UR3 1 GRIPPER FORCE
+      UR3_1_gripperForce.subscribe(function(message) {
+        console.log(
+          "Received message on " + UR3_1_gripperForce.name
+        );
+        self.UR3_1_gripperForce = message;
+        // Echo on table
+        self.ur3simuNetwork[1].topic = UR3_1_gripperForce.name;
+        self.ur3simuNetwork[1].message_received = self.UR3_1_gripperForce.effort;
+        self.ur3simuNetwork[1].unidad = "N";
+      });
+
+      // UR3 2 GRIPPER FORCE
+      UR3_2_gripperForce.subscribe(function(message) {
+        console.log(
+          "Received message on " + UR3_2_gripperForce.name
+        );
+        self.UR3_2_gripperForce = message;
+        // Echo on table
+        self.ur3simuNetwork[2].topic = UR3_2_gripperForce.name;
+        self.ur3simuNetwork[2].message_received = self.UR3_2_gripperForce.effort;
+        self.ur3simuNetwork[2].unidad = "N";
+      });
+
+      // GET ALL TOPICS NAMES (VIA ROS SERVICE CALL)
       topicsClient.callService(request, function(result) {
         console.log("Getting topics...");
         for (let index = 0; index < result.topics.length; index++) {

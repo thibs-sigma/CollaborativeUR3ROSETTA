@@ -27,6 +27,7 @@
           ripple
           class="mx-3 my-2"
           @click.native="send_action(1)"
+          @click.stop="dialogDemo = true"
         >
           <v-container grid-list-md text-xs-center>
             <v-layout align-center justify-center fill-height>
@@ -48,6 +49,57 @@
             </v-layout>
           </v-container>
         </v-card>
+
+        <v-dialog v-model="dialogDemo" persistent width="1200">
+                  <v-card>
+            <v-card-title class="headline grey lighten-2" primary-title
+              >DEMOSTRACIÓN</v-card-title
+            >
+
+        <v-card-text>
+            <div style="text-align:center;">
+              <v-flex xs12 v-if="!nextDemo"> <!-- First message -->
+                <v-icon size="500" color="green">check_circle</v-icon>
+                <br />
+                <span class="headline font-weight-bold"
+                  >Acción 'DEMO' enviada con exito!</span
+                >
+                <br />
+              </v-flex>
+              <v-flex xs12 v-else> <!-- Second message -->
+                <v-icon size="100" color="black">playlist_add_check</v-icon>
+                <br />
+                <span class="headline font-weight-bold">
+                  Ahora, seguir las acciones suiguientes:<br/>
+                </span>
+                <br/>
+                <span class="headline" style="text-align:left;">
+                  TO DO
+                </span>
+                <br />
+              </v-flex>
+            </div>
+          </v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn v-if="!nextDemo" color="orange" text dark @click="nextDemo = true"
+                >Siguiente...</v-btn
+              >
+              <v-btn
+                v-else
+                color="green"
+                text
+                dark
+                @click="
+                  dialogDemo = false;
+                  nextDemo = false;
+                "
+                >Listo!</v-btn
+              >
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+        
         <!-- END MENU TILE 1 -->
 
         <!-- MENU TILE 2 -->
@@ -58,6 +110,7 @@
           ripple
           class="mx-3 my-2"
           @click.native="send_action(2)"
+          @click.stop="dialogManip = true"
         >
           <v-container grid-list-md text-xs-center>
             <v-layout align-center justify-center fill-height>
@@ -79,6 +132,56 @@
             </v-layout>
           </v-container>
         </v-card>
+        
+        <v-dialog v-model="dialogManip" persistent width="1200">
+                  <v-card>
+            <v-card-title class="headline grey lighten-2" primary-title
+              >MANIPULACIÓN DE PIEZA</v-card-title
+            >
+
+        <v-card-text>
+            <div style="text-align:center;">
+              <v-flex xs12 v-if="!nextManip"> <!-- First message -->
+                <v-icon size="500" color="green">check_circle</v-icon>
+                <br />
+                <span class="headline font-weight-bold"
+                  >Acción 'MANIP. PIEZA' enviada con exito!</span
+                >
+                <br />
+              </v-flex>
+              <v-flex xs12 v-else> <!-- Second message -->
+                <v-icon size="100" color="black">playlist_add_check</v-icon>
+                <br />
+                <span class="headline font-weight-bold">
+                  Ahora, seguir las acciones suiguientes:<br/>
+                </span>
+                <br/>
+                <span class="headline" style="text-align:left;">
+                  TODO
+                </span>
+                <br />
+              </v-flex>
+            </div>
+          </v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn v-if="!nextManip" color="orange" text dark @click="nextManip = true"
+                >Siguiente...</v-btn
+              >
+              <v-btn
+                v-else
+                color="green"
+                text
+                dark
+                @click="
+                  dialogManip = false;
+                  nextManip = false;
+                "
+                >Listo!</v-btn
+              >
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
         <!-- END MENU TILE 2 -->
 
         <!-- MENU TILE 3 -->
@@ -89,6 +192,7 @@
           ripple
           class="mx-3 my-2"
           @click.native="send_action(3)"
+          @click.stop="dialogDual = true"
         >
           <v-container grid-list-md text-xs-center>
             <v-layout align-center justify-center fill-height>
@@ -110,6 +214,57 @@
             </v-layout>
           </v-container>
         </v-card>
+
+        <v-dialog v-model="dialogDual" persistent width="1200">
+                  <v-card>
+            <v-card-title class="headline grey lighten-2" primary-title
+              >MANIPULACIÓN CONJUNTA</v-card-title
+            >
+
+        <v-card-text>
+            <div style="text-align:center;">
+              <v-flex xs12 v-if="!nextDual"> <!-- First message -->
+                <v-icon size="500" color="green">check_circle</v-icon>
+                <br />
+                <span class="headline font-weight-bold"
+                  >Acción 'MANIP. CONJUNTA' enviada con exito!</span
+                >
+                <br />
+              </v-flex>
+              <v-flex xs12 v-else> <!-- Second message -->
+                <v-icon size="100" color="black">playlist_add_check</v-icon>
+                <br />
+                <span class="headline font-weight-bold">
+                  Ahora, seguir las acciones suiguientes:<br/>
+                </span>
+                <br/>
+                <span class="headline" style="text-align:left;">
+                  TODO
+                </span>
+                <br />
+              </v-flex>
+            </div>
+          </v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn v-if="!nextDual" color="orange" text dark @click="nextDual = true"
+                >Siguiente...</v-btn
+              >
+              <v-btn
+                v-else
+                color="green"
+                text
+                dark
+                @click="
+                  dialogDual = false;
+                  nextDual = false;
+                "
+                >Listo!</v-btn
+              >
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+                
         <!-- END MENU TILE 3 -->
       </v-layout>
       <!-- END LINE 1 -->
@@ -212,6 +367,7 @@
           ripple
           class="mx-3 my-2"
           @click.native="send_action(5)"
+          @click.stop="dialogReset = true"
         >
           <v-container grid-list-md text-xs-center>
             <v-layout align-center justify-center fill-height>
@@ -233,6 +389,56 @@
             </v-layout>
           </v-container>
         </v-card>
+
+        <v-dialog v-model="dialogReset" persistent width="1200">
+          <v-card>
+            <v-card-title class="headline grey lighten-2" primary-title
+              >RESET ACTION</v-card-title
+            >
+
+        <v-card-text>
+            <div style="text-align:center;">
+              <v-flex xs12 v-if="!nextReset"> <!-- First message -->
+                <v-icon size="500" color="green">check_circle</v-icon>
+                <br />
+                <span class="headline font-weight-bold"
+                  >Acción 'RESET' enviada con exito!</span
+                >
+                <br />
+              </v-flex>
+              <v-flex xs12 v-else> <!-- Second message -->
+                <v-icon size="100" color="black">playlist_add_check</v-icon>
+                <br />
+                <span class="headline font-weight-bold">
+                  Ahora, seguir las acciones suiguientes:<br/>
+                </span>
+                <br/>
+                <span class="headline" style="text-align:left;">
+                  TO DO
+                </span>
+                <br />
+              </v-flex>
+            </div>
+          </v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn v-if="!nextReset" color="orange" text dark @click="nextReset = true"
+                >Siguiente...</v-btn
+              >
+              <v-btn
+                v-else
+                color="green"
+                text
+                dark
+                @click="
+                  dialogReset = false;
+                  nextReset = false;
+                "
+                >Listo!</v-btn
+              >
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
         <!-- END MENU TILE 5 -->
       </v-layout>
       <!-- END LINE 2 -->
@@ -286,7 +492,15 @@ export default {
   data() {
     return {
       dialog: false,
+      dialogDemo : false,
+      dialogManip : false,
+      dialogDual : false,
+      dialogReset : false,
       next: false,
+      nextDemo: false,
+      nextManip: false,
+      nextDual: false,
+      nextReset: false,
       end: false,
 
       connected: "",

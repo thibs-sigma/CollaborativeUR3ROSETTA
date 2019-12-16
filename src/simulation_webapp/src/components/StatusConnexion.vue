@@ -9,7 +9,7 @@
     left
     class="disable-events"
     style="margin-bottom: 40px"
-    v-if="connected == 1"
+    v-if="connected >= 1"
   >CONECTADO</v-btn>
 </template>
 
@@ -19,11 +19,19 @@ import ROS from "../ros_build/roslib.js";
 
 var ros = new ROSLIB.Ros({ url: "ws://localhost:9090" });
 
+var connected;
+
+var client_count = new ROSLIB.Topic({
+  ros: ros,
+  name: "/client_count",
+  messageType: "std_msgs/Int32"
+});
+
 export default {
   name: "StatusConnexion",
   data() {
     return {
-      connected: 1
+      connected:1
     };
   },
   mounted() {
@@ -34,20 +42,30 @@ export default {
     init() {
       ros.on("connection", function() {
         console.log("Connected to websocket server.");
-        var connected = 1;
+        // var connected = 1;
       });
 
       ros.on("error", function(error) {
         console.log("Error connecting to websocket server: ", error);
-        var connected = 2;
+        // var connected = 2;
       });
 
       ros.on("close", function() {
         console.log("Connection to websocket server closed.");
-        var connected = 3;
+        // var connected = 3;
       });
 
       var self = this;
+
+      // TEST
+      client_count.subscribe(function(message) {
+        console.log(
+          "Received message on " + client_count.name + ": " + message.data
+        );
+        self.listener_string = message;
+        // Store in a variable
+        connected = self.listener_string.data;
+      });
     }
   },
   computed: {
