@@ -6,18 +6,75 @@
 
       <br />
 
-      <!-- MENU TILE 1 -->
+      <!-- BEGIN LINE 1 -->
+      <v-layout align-center justify-center row> 
 
-      <v-card height="270" width="300" hover ripple class="mx-3 my-2" to="choose_action">
+        <!-- MENU TILE 1 -->
+
+        <v-card height="270" width="300" hover ripple class="mx-3 my-2" to="choose_action">
+          <v-container grid-list-md text-xs-center>
+            <v-layout align-center justify-center fill-height>
+              <a href="choose_action" style="text-decoration: none; color: black">
+                <v-flex xs12>
+                  <p>
+                    <img :src="require('../assets/img/control.png')" style="height: 150px; margin-top: 35px; margin-bottom: -30px;" />
+                  </p>
+                  <br />
+                  <span class="headline font-weight-bold">CONTROL DE LA SIMULACION</span>
+                  <br />
+                  <!-- <span class="subheading">
+                    Test 3
+                  </span>-->
+                  <br />
+                </v-flex>
+              </a>
+            </v-layout>
+          </v-container>
+        </v-card>
+
+        <!-- END MENU TILE 1 -->
+
+        <!-- MENU TILE 2 -->
+
+        <v-card height="270" width="300" hover ripple class="mx-3 my-2" to="simulation_network">
+          <v-container grid-list-md text-xs-center>
+            <v-layout align-center justify-center fill-height>
+              <a href="simulation_network" style="text-decoration: none; color: black">
+                <v-flex xs12>
+                  <p>
+                    <img :src="require('../assets/img/network.png')" style="height: 150px; margin-top: 35px; margin-bottom: -30px;" />
+                  </p>
+                  <br />
+                  <span class="headline font-weight-bold">RED DE ROS</span>
+                  <br />
+                  <!-- <span class="subheading">
+                    Test 3
+                  </span>-->
+                  <br />
+                </v-flex>
+              </a>
+            </v-layout>
+          </v-container>
+        </v-card>
+
+        <!-- END MENU TILE 2 -->
+      </v-layout>
+
+      <!-- BEGIN LINE 2 -->
+      <v-layout align-center justify-center row> 
+
+      <!-- MENU TILE 3 -->
+
+      <v-card height="270" width="300" hover ripple class="mx-3 my-2" to="https://github.com/thibs-sigma/CollaborativeUR3ROSETTA/wiki">
         <v-container grid-list-md text-xs-center>
           <v-layout align-center justify-center fill-height>
-            <a href="choose_action" style="text-decoration: none; color: black">
+            <a href="https://github.com/thibs-sigma/CollaborativeUR3ROSETTA/wiki/Interfaz-gráfica" target="_blank" style="text-decoration: none; color: black">
               <v-flex xs12>
                 <p>
-                  <img :src="require('../assets/img/control.png')" style="height: 150px; margin-top: 35px; margin-bottom: -30px;" />
+                  <img :src="require('../assets/img/help.png')" style="height: 150px; margin-top: 35px; margin-bottom: -30px;" />
                 </p>
                 <br />
-                <span class="headline font-weight-bold">CONTROL DE LA SIMULACION</span>
+                <span class="headline font-weight-bold">AYUDA</span>
                 <br />
                 <!-- <span class="subheading">
                   Test 3
@@ -29,8 +86,12 @@
         </v-container>
       </v-card>
 
-      <!-- END MENU TILE 1 -->
+      <!-- END MENU TILE 3 -->
+
+      </v-layout>
+
     </v-container>
+
   </div>
 </template>
 
