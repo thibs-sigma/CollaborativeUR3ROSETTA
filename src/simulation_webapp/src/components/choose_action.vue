@@ -54,24 +54,123 @@
                 >
                 <br />
               </v-flex>
-              <v-flex xs12 v-else> <!-- Second message -->
+
+              <v-flex xs12 v-else-if="!nextDemo2"> <!-- Second message -->
                 <!-- <v-icon size="100" color="black">playlist_add_check</v-icon> -->
-                  <img :src="require('../assets/img/demo_gears.png')" style="height: 150px;" />
+                <img :src="require('../assets/img/loading.gif')" style="height: 50px;" />
                 <br />
                 <span class="headline font-weight-bold">
-                  Ahora, la demo va a iniciar<br/>
+                  Ahora, la demostración va a iniciar<br/>
                 </span>
                 <br/>
                 <span class="headline" style="text-align:left;">
-                  TO DO
+                  Verifica las informaciones en la salida consola en el Terminal. <br/>
+                  Una vez que los robots empezan a mover, presiona <b>'Siguiente'</b>
                 </span>
                 <br />
+              </v-flex>
+
+              <v-flex xs12 v-else> <!-- Third message -->
+
+                <!-- <v-icon size="100" color="black">playlist_add_check</v-icon> -->
+                <img :src="require('../assets/img/get_object.png')" style="height: 50px;" /> 
+                <img :src="require('../assets/img/plus.png')" style="height: 50px;" />
+                <img :src="require('../assets/img/manip.png')" style="height: 50px;" />
+                <br />
+                <span class="headline font-weight-bold">
+                  Informaciones tiempo-real sobre la simulación<br/>
+                </span>
+                <br/>
+                <span class="headline" style="text-align:left;">
+                  Siempre verifica las informaciones completas en la salida consola en el Terminal. <br/>
+                </span>
+                <br />
+              <!-- BEGIN LINE 1 -->
+              <v-layout align-center justify-center row > 
+                <v-card height="100%" width="300" hover ripple class="mx-3 my-2 disable-events" to="choose_action">
+                  <v-container grid-list-md text-xs-center>
+                    <v-layout align-center justify-center >
+                        <v-flex xs12>
+                          <p>
+                            <img :src="require('../assets/img/joint_states.png')" style="height: 100px; margin-top: 0px; margin-bottom: -30px;" />
+                          </p>
+                          <br />
+                          <span class="headline font-weight-bold">JOINT STATES</span>
+                          <br />
+                          <span class="subheading">
+                            <!-- <v-data-table :headers="headers" :items="jointStatesTable" hide-actions>
+                              <template v-slot:items="props">
+                                <td >{{ props.item.topic }}</td>
+                                <td class="text-xs-left">{{ props.item.message_received }} {{ props.item.unidad }}</td>
+                              </template>
+                            </v-data-table> -->
+                            Para obtener informaciones sobre los JointStates, ejectua <br/>
+                            <b>'rostopic echo /joint_states'</b>
+                          </span>
+                          <br />
+
+                        </v-flex>
+                    </v-layout>
+                    
+
+
+                  </v-container>
+                </v-card>
+
+                <v-card height="100%" width="300" hover ripple class="mx-3 my-2 disable-events" to="choose_action">
+                  <v-container grid-list-md text-xs-center>
+                    <v-layout align-center justify-center>
+                        <v-flex xs12>
+                          <p>
+                            <img :src="require('../assets/img/gripper.png')" style="height: 100px; margin-top: 0px; margin-bottom: -30px;" />
+                          </p>
+                          <br />
+                          <span class="headline font-weight-bold">GRIPPERS</span>
+                          <br />
+                          <span class="subheading">
+                            <v-data-table :headers="headers" :items="grippersStatesTable" hide-actions>
+                              <template v-slot:items="props">
+                                <td >{{ props.item.topic }}</td>
+                                <td class="text-xs-left">{{ props.item.message_received }} {{ props.item.unidad }}</td>
+                              </template>
+                            </v-data-table>
+                          </span>
+                          <br />
+                        </v-flex>
+                    </v-layout>
+                  </v-container>
+                </v-card>
+
+                <v-card height="100%" width="300" hover ripple class="mx-3 my-2 disable-events" to="choose_action">
+                  <v-container grid-list-md text-xs-center>
+                    <v-layout align-center justify-center>
+                        <v-flex xs12>
+                          <p>
+                            <img :src="require('../assets/img/moveit.png')" style="height: 50px; margin-top: 50px; margin-bottom: -30px;" />
+                          </p>
+                          <br />
+                          <span class="headline font-weight-bold">MOTION PLANNING</span>
+                          <br />
+                          <span class="subheading">
+                            Status: {{moveit_status_received}}
+                          </span>
+                          <br />
+                        </v-flex>
+                    </v-layout>
+                  </v-container>
+                </v-card>
+
+               </v-layout>
+
               </v-flex>
             </div>
           </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn v-if="!nextDemo" color="orange" text dark @click="nextDemo = true"
+              <v-btn v-if="!nextDemo" color="orange" text dark @click="nextDemo = true;"
+                >Siguiente...</v-btn
+              >
+              <v-btn v-else-if="!nextDemo2" color="orange" text dark @click="nextDemo2 = true"
                 >Siguiente...</v-btn
               >
               <v-btn
@@ -82,6 +181,7 @@
                 @click="
                   dialogDemo = false;
                   nextDemo = false;
+                  nextDemo2 = false;
                 "
                 >Listo!</v-btn
               >
@@ -138,6 +238,7 @@
                 >
                 <br />
               </v-flex>
+
               <v-flex xs12 v-else-if="!nextManip2"> <!-- Second message -->
                 <!-- <v-icon size="100" color="black">playlist_add_check</v-icon> -->
                 <img :src="require('../assets/img/loading.gif')" style="height: 50px;" />
@@ -163,10 +264,10 @@
                 </span>
                 <br/>
                 <span class="headline" style="text-align:left;">
-                  Simpre verifica las informaciones completas en la salida consola en el Terminal. <br/>
+                  Siempre verifica las informaciones completas en la salida consola en el Terminal. <br/>
                 </span>
                 <br />
-                      <!-- BEGIN LINE 1 -->
+              <!-- BEGIN LINE 1 -->
               <v-layout align-center justify-center row > 
                 <v-card height="100%" width="300" hover ripple class="mx-3 my-2 disable-events" to="choose_action">
                   <v-container grid-list-md text-xs-center>
@@ -179,12 +280,14 @@
                           <span class="headline font-weight-bold">JOINT STATES</span>
                           <br />
                           <span class="subheading">
-                            <v-data-table :headers="headers" :items="jointStatesTable" hide-actions>
+                            <!-- <v-data-table :headers="headers" :items="jointStatesTable" hide-actions>
                               <template v-slot:items="props">
                                 <td >{{ props.item.topic }}</td>
                                 <td class="text-xs-left">{{ props.item.message_received }} {{ props.item.unidad }}</td>
                               </template>
-                            </v-data-table>
+                            </v-data-table> -->
+                            Para obtener informaciones sobre los JointStates, ejectua <br/>
+                            <b>'rostopic echo /joint_states'</b>
                           </span>
                           <br />
 
@@ -204,11 +307,16 @@
                             <img :src="require('../assets/img/gripper.png')" style="height: 100px; margin-top: 0px; margin-bottom: -30px;" />
                           </p>
                           <br />
-                          <span class="headline font-weight-bold">GRIPPER</span>
+                          <span class="headline font-weight-bold">GRIPPERS</span>
                           <br />
-                          <!-- <span class="subheading">
-                            Test 3
-                          </span>-->
+                          <span class="subheading">
+                            <v-data-table :headers="headers" :items="grippersStatesTable" hide-actions>
+                              <template v-slot:items="props">
+                                <td >{{ props.item.topic }}</td>
+                                <td class="text-xs-left">{{ props.item.message_received }} {{ props.item.unidad }}</td>
+                              </template>
+                            </v-data-table>
+                          </span>
                           <br />
                         </v-flex>
                     </v-layout>
@@ -225,9 +333,9 @@
                           <br />
                           <span class="headline font-weight-bold">MOTION PLANNING</span>
                           <br />
-                          <!-- <span class="subheading">
-                            Test 3
-                          </span>-->
+                          <span class="subheading">
+                            Status: {{moveit_status_received}}
+                          </span>
                           <br />
                         </v-flex>
                     </v-layout>
@@ -310,23 +418,121 @@
                 >
                 <br />
               </v-flex>
-              <v-flex xs12 v-else> <!-- Second message -->
-                <v-icon size="100" color="black">playlist_add_check</v-icon>
+
+              <v-flex xs12 v-else-if="!nextDual2"> <!-- Second message -->
+                <!-- <v-icon size="100" color="black">playlist_add_check</v-icon> -->
+                <img :src="require('../assets/img/loading.gif')" style="height: 50px;" />
                 <br />
                 <span class="headline font-weight-bold">
-                  Ahora, seguir las acciones suiguientes:<br/>
+                  Ahora, la manipulación conjunta va a iniciar<br/>
                 </span>
                 <br/>
                 <span class="headline" style="text-align:left;">
-                  TODO
+                  Verifica las informaciones en la salida consola en el Terminal. <br/>
+                  Una vez que los robots empezan a mover, presiona <b>'Siguiente'</b>
                 </span>
                 <br />
+              </v-flex>
+
+              <v-flex xs12 v-else> <!-- Third message -->
+
+                <!-- <v-icon size="100" color="black">playlist_add_check</v-icon> -->
+                <img :src="require('../assets/img/manip.png')" style="height: 50px;" />
+                <br />
+                <span class="headline font-weight-bold">
+                  Informaciones tiempo-real sobre la simulación<br/>
+                </span>
+                <br/>
+                <span class="headline" style="text-align:left;">
+                  Siempre verifica las informaciones completas en la salida consola en el Terminal. <br/>
+                </span>
+                <br />
+              <!-- BEGIN LINE 1 -->
+              <v-layout align-center justify-center row > 
+                <v-card height="100%" width="300" hover ripple class="mx-3 my-2 disable-events" to="choose_action">
+                  <v-container grid-list-md text-xs-center>
+                    <v-layout align-center justify-center >
+                        <v-flex xs12>
+                          <p>
+                            <img :src="require('../assets/img/joint_states.png')" style="height: 100px; margin-top: 0px; margin-bottom: -30px;" />
+                          </p>
+                          <br />
+                          <span class="headline font-weight-bold">JOINT STATES</span>
+                          <br />
+                          <span class="subheading">
+                            <!-- <v-data-table :headers="headers" :items="jointStatesTable" hide-actions>
+                              <template v-slot:items="props">
+                                <td >{{ props.item.topic }}</td>
+                                <td class="text-xs-left">{{ props.item.message_received }} {{ props.item.unidad }}</td>
+                              </template>
+                            </v-data-table> -->
+                            Para obtener informaciones sobre los JointStates, ejectua <br/>
+                            <b>'rostopic echo /joint_states'</b>
+                          </span>
+                          <br />
+
+                        </v-flex>
+                    </v-layout>
+                    
+
+
+                  </v-container>
+                </v-card>
+
+                <v-card height="100%" width="300" hover ripple class="mx-3 my-2 disable-events" to="choose_action">
+                  <v-container grid-list-md text-xs-center>
+                    <v-layout align-center justify-center>
+                        <v-flex xs12>
+                          <p>
+                            <img :src="require('../assets/img/gripper.png')" style="height: 100px; margin-top: 0px; margin-bottom: -30px;" />
+                          </p>
+                          <br />
+                          <span class="headline font-weight-bold">GRIPPERS</span>
+                          <br />
+                          <span class="subheading">
+                            <v-data-table :headers="headers" :items="grippersStatesTable" hide-actions>
+                              <template v-slot:items="props">
+                                <td >{{ props.item.topic }}</td>
+                                <td class="text-xs-left">{{ props.item.message_received }} {{ props.item.unidad }}</td>
+                              </template>
+                            </v-data-table>
+                          </span>
+                          <br />
+                        </v-flex>
+                    </v-layout>
+                  </v-container>
+                </v-card>
+
+                <v-card height="100%" width="300" hover ripple class="mx-3 my-2 disable-events" to="choose_action">
+                  <v-container grid-list-md text-xs-center>
+                    <v-layout align-center justify-center>
+                        <v-flex xs12>
+                          <p>
+                            <img :src="require('../assets/img/moveit.png')" style="height: 50px; margin-top: 50px; margin-bottom: -30px;" />
+                          </p>
+                          <br />
+                          <span class="headline font-weight-bold">MOTION PLANNING</span>
+                          <br />
+                          <span class="subheading">
+                            Status: {{moveit_status_received}}
+                          </span>
+                          <br />
+                        </v-flex>
+                    </v-layout>
+                  </v-container>
+                </v-card>
+
+               </v-layout>
+
               </v-flex>
             </div>
           </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn v-if="!nextDual" color="orange" text dark @click="nextDual = true"
+                >Siguiente...</v-btn
+              >
+              <v-btn v-else-if="!nextDual2" color="orange" text dark @click="nextDual2 = true"
                 >Siguiente...</v-btn
               >
               <v-btn
@@ -337,6 +543,7 @@
                 @click="
                   dialogDual = false;
                   nextDual = false;
+                  nextDual2 = false;
                 "
                 >Listo!</v-btn
               >
@@ -397,6 +604,7 @@
                 >
                 <br />
               </v-flex>
+
               <v-flex xs12 v-else> <!-- Second message -->
                 <v-icon size="100" color="black">playlist_add_check</v-icon>
                 <br />
@@ -415,8 +623,11 @@
                 </span>
                 <br />
               </v-flex>
+
+              
             </div>
           </v-card-text>
+
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn v-if="!next" color="orange" text dark @click="next = true"
@@ -430,6 +641,7 @@
                 @click="
                   dialog = false;
                   next = false;
+                  next2 = false;
                 "
                 >Listo!</v-btn
               >
@@ -551,6 +763,24 @@ var jointStates = new ROSLIB.Topic({
   messageType: "sensor_msgs/JointState"
 });
 
+var UR3_1_gripperState = new ROSLIB.Topic({
+  ros: ros,
+  name: "/UR3_1/gripper_force",
+  messageType: "sensor_msgs/JointState"
+});
+
+var UR3_2_gripperState = new ROSLIB.Topic({
+  ros: ros,
+  name: "/UR3_2/gripper_force",
+  messageType: "sensor_msgs/JointState"
+});
+
+var moveitState = new ROSLIB.Topic({
+  ros: ros,
+  name: "/move_group/status",
+  messageType: "actionlib_msgs/GoalStatusArray"
+});
+
 var desired_action_data = new ROSLIB.Message({});
 
 export default {
@@ -564,9 +794,11 @@ export default {
       dialogReset : false,
       next: false,
       nextDemo: false,
+      nextDemo2: false,
       nextManip: false,
       nextManip2: false,
       nextDual: false,
+      nextDual2: false,
       nextReset: false,
       end: false,
 
@@ -578,6 +810,14 @@ export default {
 
       jointStates: "",
       jointStates_data: "",
+
+      UR3_1_gripperState: "",
+      UR3_1_gripperState_data: "",
+
+      UR3_2_gripperState: "",
+      UR3_2_gripperState_data: "",
+
+      moveit_status_received: "No información disponible...",
 
       headers: [
         {
@@ -591,6 +831,20 @@ export default {
         { text: "Valor", value: "message_received" },
       ],
       jointStatesTable: [
+        {
+          // Default text if nothing received (to be defined for each line)
+          topic: "Ningun topic disponible...",
+          message_received: "Ningun mensaje recibido...",
+          unidad: "?"
+        }
+      ],
+      grippersStatesTable: [
+        {
+          // Default text if nothing received (to be defined for each line)
+          topic: "Ningun topic disponible...",
+          message_received: "Ningun mensaje recibido...",
+          unidad: "?"
+        },
         {
           // Default text if nothing received (to be defined for each line)
           topic: "Ningun topic disponible...",
@@ -644,11 +898,50 @@ export default {
         self.jointStates = message;
         // Echo on table
         for (let i = 0; i < jointStates.name.length; i++) {
-          self.jointStatesTable[i].topic = jointStates.name[i];
+          self.jointStatesTable[i].topic = self.jointStates.name[i];
           self.jointStatesTable[i].message_received = self.jointStates.position[i];
           self.jointStatesTable[i].unidad = "rad";
           
         }
+      });
+
+      // GRIPPERS STATES
+      UR3_1_gripperState.subscribe(function(message) {
+        console.log(
+          "Received message on " + UR3_1_gripperState.name
+        );
+        // console.log(jointStates.name.length)
+        self.UR3_1_gripperState = message;
+        // Echo on table
+        for (let i = 0; i < 2; i++) {
+          self.grippersStatesTable[i].topic = 'UR3_1_gripper_' + self.UR3_1_gripperState.name[i];
+          self.grippersStatesTable[i].message_received = self.UR3_1_gripperState.effort[i];
+          self.grippersStatesTable[i].unidad = "N";
+        }
+      });
+      UR3_2_gripperState.subscribe(function(message) {
+        console.log(
+          "Received message on " + UR3_2_gripperState.name
+        );
+        // console.log(jointStates.name.length)
+        self.UR3_2_gripperState = message;
+        // Echo on table
+        for (let i = 0; i < 2; i++) {
+          self.grippersStatesTable[i+2].topic = 'UR3_2_gripper_' + self.UR3_2_gripperState.name[i];
+          self.grippersStatesTable[i+2].message_received = self.UR3_2_gripperState.effort[i];
+          self.grippersStatesTable[i+2].unidad = "N";
+        }
+      });
+
+      // MOVEIT STATE
+      moveitState.subscribe(function(message) {
+        console.log(
+          "Received message on " + moveitState.name
+        );
+        // console.log(jointStates.name.length)
+        self.moveitState = message;
+        // Echo 
+        self.moveit_status_received = self.moveitState.status_list[0].text;
 
       });
     },
